@@ -77,10 +77,13 @@ class Hand (object):
     def __repr__(self):
         return "<Hand:{}>".format(",".join([str(c) for c in self.cards]))
 
-    def add(self, card):
-        if not isinstance (card, Card):
-            raise TypeError("{} is not a card!".format(card))
-        self.cards.append(card)
+    def __str__(self):
+        suit_strings = []
+        for s in SUITS:
+            cards = sorted(self.by_suit(s), reverse=True)
+            if cards:
+                suit_strings.append("".join([c.rank for c in cards]) + s)
+        return " ".join(suit_strings)
 
     def sort(self):
         self.cards.sort(reverse=True)

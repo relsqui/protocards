@@ -2,6 +2,7 @@
 
 import itertools
 from random import getrandbits
+from operator import mul
 
 import cards
 cards.RANKS = "A23456789TJQK"
@@ -18,21 +19,42 @@ def value(card):
     else:
         return 10
 
-def count_pairs(hand):
+def score_pairs(hand):
     pairs = 0
     for r in cards.RANKS:
         same = float(len(hand.by_rank(r)))
         pairs += (same * ((same - 1) / 2))
-    return int(pairs)
+    return int(pairs) * 2
 
-def count_fifteens(hand):
+def score_fifteens(hand):
     fifteens = 0
     for i in range(2, 10):
         books = itertools.combinations(hand.cards, i)
         for b in books:
             if sum([value(c) for c in b]) == 15:
                 fifteens += 1
-    return fifteens
+    return fifteens * 2
+
+def score_runs(hand):
+    rank_counts = []
+    for r in cards.RANKS:
+        rank_counts.append(len(hand.by_rank(r)))
+
+    begin = 0
+    run_slices = []
+    for end in range(len(cards.RANKS)):
+        if not rank_counts[end]:
+            if end > begin:
+                run_slices.append(rank_counts[begin:end])
+            begin = end + 1
+    if begin < len(cards.RANKS):
+        run_slices.append(rank_counts[begin:])
+
+    run_score = 0
+    for run in run_slices:
+        if len(run) > 2:
+            run_score += reduce(mul, run, len(run))
+    return run_score
 
 def check_flush(hand):
     if len(hand.cards) == len(hand.by_suit(hand.cards[0].suit)):
@@ -46,13 +68,17 @@ def score_hand(hand, turned = None, crib = False, dealer = False):
     if turned:
         test_hand.append(turned)
 
-    fifteens = count_fifteens(test_hand)
+    fifteens = score_fifteens(test_hand)
     if fifteens:
-        score["fifteens"] = fifteens * 2
+        score["fifteens"] = fifteens
 
-    pairs = count_pairs(test_hand)
+    pairs = score_pairs(test_hand)
     if pairs:
-        score["pairs"] = pairs * 2
+        score["pairs"] = pairs
+
+    runs = score_runs(test_hand)
+    if runs:
+        score["runs"] = runs
 
     if check_flush(hand):
         if turned and hand.cards[0].suit == turned.suit:
@@ -64,7 +90,7 @@ def score_hand(hand, turned = None, crib = False, dealer = False):
         if turned.rank == "J":
             score["heels"] = 2
     elif turned and cards.Card("J" + turned.suit) in hand.cards:
-        score["nibs"] = 1
+        score["nobs"] = 1
 
     return score
 

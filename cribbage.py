@@ -1,10 +1,14 @@
 #!/usr/bin/python
 
 import itertools
+from random import getrandbits
 
 import cards
 cards.RANKS = "A23456789TJQK"
 
+
+def rand_bool():
+    return not getrandbits(1)
 
 def value(card):
     if card.rank == "A":
@@ -64,13 +68,20 @@ def score_hand(hand, turned = None, crib = False, dealer = False):
 
     return score
 
+
 if __name__ == "__main__":
     deck = cards.make_deck()
     hand = cards.Hand()
     hand.extend(deck.deal(4))
     turned = deck.pop()
-    score = score_hand(hand, turned=turned)
+    dealing = rand_bool()
+    cribbing = rand_bool()
+    score = score_hand(hand, turned=turned, dealer=dealing, crib=cribbing)
 
+    if dealing:
+        print "dealing."
+    if cribbing:
+        print "counting crib."
     print "turned:", turned
     print hand
     print

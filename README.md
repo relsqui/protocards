@@ -39,3 +39,26 @@ cribbage.py overrides `cards.RANKS`, just to reorder them so A is low.
 When called from the command line, cribbage.py deals a hand of four cards,
 turns a card, chooses randomly whether it's the dealer and whether it's
 counting a crib, and scores the hand.
+
+
+I wrote this because I wanted to know what the cribbage score for a whole deck
+of cards was. Here's the answer, if you're curious:
+
+```
+relsqui@barrett:~/cribbage-scorer$ cat score_the_deck.py 
+#!/usr/bin/python
+
+import cards, cribbage
+
+score = cribbage.score_hand(cards.make_deck())
+for k, v in score.items():
+    print k, "for", v
+print "total:", sum(score.values())
+
+
+relsqui@barrett:~/cribbage-scorer$ ./score_the_deck.py 
+fifteens for 34528
+runs for 872415232
+pairs for 156
+total: 872449916
+```

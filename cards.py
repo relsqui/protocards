@@ -3,9 +3,8 @@
 
 import random, itertools, functools
 
-RANKS = "A23456789TJQK"
+RANKS = "23456789TJQKA"
 RANK_NAMES = {
-    "A": "Ace",
     "2": "Two",
     "3": "Three",
     "4": "Four",
@@ -17,7 +16,8 @@ RANK_NAMES = {
     "T": "Ten",
     "J": "Jack",
     "Q": "Queen",
-    "K": "King"
+    "K": "King",
+    "A": "Ace"
 }
 
 SUITS = "cdhs"
@@ -44,13 +44,6 @@ class Card (object):
             raise ValueError("Bad suit: {}".format(suit))
         self.rank = rank
         self.suit = suit
-
-        if rank == "A":
-            self.value = 1
-        elif rank in "TJQK":
-            self.value = 10
-        else:
-            self.value = int(rank)
 
         self.name = "{} of {}".format(RANK_NAMES[rank], SUIT_NAMES[suit])
 
@@ -99,10 +92,6 @@ class Hand (object):
         if rank not in RANKS:
             raise ValueError("Bad rank: {}".format(suit))
         return [c for c in self.cards if c.rank == rank]
-
-    def by_value(self, value):
-        value = int(value)
-        return [c for c in self.cards if c.value == value]
 
     def shuffle(self):
         random.shuffle(self.cards)

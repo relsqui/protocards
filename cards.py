@@ -36,8 +36,8 @@ class Card (object):
         if len(string) != 2:
             raise ValueError("Card string should be exactly two characters.")
 
-        rank = string[0].upper()
-        suit = string[1].lower()
+        rank = string[0]
+        suit = string[1]
         if rank not in RANKS:
             raise ValueError("Bad rank: {}".format(rank))
         if suit not in SUITS:
@@ -79,13 +79,11 @@ class Hand (object):
         return " ".join(suit_strings)
 
     def by_suit(self, suit):
-        suit = suit.lower()
         if suit not in SUITS:
             raise ValueError("Bad suit: {}".format(suit))
         return [c for c in self.cards if c.suit == suit]
 
     def by_rank(self, rank):
-        rank = rank.upper()
         if rank not in RANKS:
             raise ValueError("Bad rank: {}".format(suit))
         return [c for c in self.cards if c.rank == rank]
@@ -97,7 +95,7 @@ class Hand (object):
         random.shuffle(self.cards)
 
     def append(self, card):
-        if not isinstance (card, Card):
+        if not isinstance(card, Card):
             raise TypeError("{} is not a card!".format(card))
         self.cards.append(card)
 
@@ -122,7 +120,6 @@ def make_deck(shuffle = True):
     return deck
 
 if __name__ == "__main__":
-    deck = make_deck()
     hand = Hand()
-    hand.extend(deck.deal(13))
+    hand.extend(make_deck().deal(13))
     print hand

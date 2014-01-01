@@ -55,7 +55,7 @@ def score_hand(hand, turned = None, crib = False, dealer = False):
         score["pairs"] = pairs * 2
 
     if check_flush(hand):
-        if turned and hand.cards[0].rank == turned.rank:
+        if turned and hand.cards[0].suit == turned.suit:
             score["flush"] = len(hand.cards) + 1
         elif not turned or not crib:
             score["flush"] = len(hand.cards)

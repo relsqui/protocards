@@ -88,5 +88,5 @@ pairs for 156
 total: 872449916
 ```
 
-Plus 0-2 for heels/nobs, depending on the turned card and whether you're
+Plus 1-2 for heels/nobs, depending on the turned card and whether you're
 dealing.

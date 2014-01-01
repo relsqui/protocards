@@ -16,15 +16,16 @@ Some basic card classes and a cribbage scoring library.
 
 ###### classes
 * `Card(string)`
-  * init with a rank + suit string, e.g "Jh" for the Jack of Hearts.
-    * invalid init strings raise `ValueError`.
+  * initialize with a rank + suit string, e.g "Jh" for the Jack of Hearts.
+    * invalid rank + suit strings raise `ValueError`.
   * no exposed methods.
   * can be compared and sorted; will use rank first, then suit, as ordered
     in the constant strings.
 
-* `Hand()`
-  * `.append(Card)` or `.extend([Card, ...])` to populate.
-    * raises `TypeError` if something other than a `Card` is passed.
+* `Hand(Card, ...)`
+    * raises `TypeError` if something other than a `Card` is added, either at
+      initialization or later.
+  * `.append(Card)` or `.extend([Card, ...])` to add cards.
   * `.sort()` or `.shuffle()` in place.
   * `.pop()` or `.deal(count)` to remove and return members.
   * view subsets `.by_rank(rank)` or `.by_suit(suit)`.

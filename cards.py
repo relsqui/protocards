@@ -64,11 +64,13 @@ class Card (object):
 
 
 class Hand (object):
-    def __init__ (self):
+    def __init__ (self, *cards):
         self.cards = []
+        for card in cards:
+            self.append(card)
 
     def __repr__(self):
-        return "<Hand:{}>".format(",".join([str(c) for c in self.cards]))
+        return "Hand({})".format(", ".join([repr(c) for c in self.cards]))
 
     def __str__(self):
         suit_strings = []
@@ -112,6 +114,7 @@ class Hand (object):
             dealt.append(self.pop())
         return dealt
 
+
 def make_deck(shuffle = True):
     deck = Hand()
     deck.extend([Card(rank + suit) for suit, rank in itertools.product(SUITS, RANKS)])
@@ -119,7 +122,6 @@ def make_deck(shuffle = True):
         deck.shuffle()
     return deck
 
+
 if __name__ == "__main__":
-    hand = Hand()
-    hand.extend(make_deck().deal(13))
-    print hand
+    print Hand(*make_deck().deal(13))

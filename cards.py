@@ -74,36 +74,53 @@ class Hand (object):
     def __init__ (self):
         self.cards = []
 
+    def __repr__(self):
+        return "<Hand:{}>".format(",".join([str(c) for c in self.cards]))
+
     def add(self, card):
         if not isinstance (card, Card):
             raise TypeError("{} is not a card!".format(card))
         self.cards.append(card)
-        return self
+
+    def sort(self):
+        self.cards.sort(reverse=True)
 
     def by_suit(self, suit):
         suit = suit.lower()
-        if suit not in SUIT_NAMES:
+        if suit not in SUITS:
             raise ValueError("Bad suit: {}".format(suit))
-        suited = [c for c in self.cards if c.suit == suit]
-        return suited
+        return [c for c in self.cards if c.suit == suit]
 
-    def __str__(self):
-        hand_string = ""
-        for suit in SUIT_NAMES:
-            ranks = [c.rank for c in self.by_suit(suit)]
-            if ranks:
-                hand_string += "".join(ranks) + suit + " "
-        return hand_string
+    def by_rank(self, rank):
+        rank = rank.upper()
+        if rank not in RANKS:
+            raise ValueError("Bad rank: {}".format(suit))
+        return [c for c in self.cards if c.rank == rank]
+
+    def by_value(self, value):
+        value = int(value)
+        return [c for c in self.cards if c.value == value]
+
+    def shuffle(self):
+        random.shuffle(self.cards)
+
+    def pop(self):
+        return self.cards.pop()
 
 
 if __name__ == "__main__":
-    import sys
+    deck = Hand()
+    for suit, rank in itertools.product(SUITS, RANKS):
+        deck.add(Card(rank + suit))
+    print deck
+    deck.shuffle()
+    print deck
+
+    print
 
     hand = Hand()
-    for string in sys.argv[1:]:
-        try:
-            hand.add(Card(string))
-        except ValueError as e:
-            print "Error parsing '{}': {}".format(string, e)
-
+    for i in range(5):
+        hand.add(deck.pop())
+    print hand
+    hand.sort()
     print hand

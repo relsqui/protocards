@@ -23,12 +23,21 @@ def score_pairs(hand):
     return int(pairs) * 2
 
 def score_fifteens(hand):
-    fifteens = 0
-    for i in range(2, 10):
-        books = itertools.combinations(hand.cards, i)
-        for b in books:
-            if sum([value(c) for c in b]) == 15:
-                fifteens += 1
+    def count_subsums(target, numbers):
+        subsums = 0
+        if sum(numbers) == target:
+            subsums = 1
+        elif sum(numbers) > target:
+            subsums = 0
+            for i, n in enumerate(numbers):
+                if n == target:
+                    subsums += 1
+                elif n < target:
+                    subsums += count_subsums(target - n, numbers[i+1:])
+        return subsums
+
+    values = sorted([value(c) for c in hand.cards], reverse=True)
+    fifteens = count_subsums(15, values)
     return fifteens * 2
 
 def score_runs(hand):

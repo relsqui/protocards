@@ -85,7 +85,7 @@ class Hand (object):
 
     def by_rank(self, rank):
         if rank not in RANKS:
-            raise ValueError("Bad rank: {}".format(suit))
+            raise ValueError("Bad rank: {}".format(rank))
         return [c for c in self.cards if c.rank == rank]
 
     def sort(self):

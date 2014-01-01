@@ -80,21 +80,26 @@ class Hand (object):
                 suit_strings.append("".join([c.rank for c in cards]) + s)
         return " ".join(suit_strings)
 
-    def by_suit(self, suit):
-        if suit not in SUITS:
-            raise ValueError("Bad suit: {}".format(suit))
-        return [c for c in self.cards if c.suit == suit]
+    def __len__(self):
+        return len(self.cards)
 
-    def by_rank(self, rank):
-        if rank not in RANKS:
-            raise ValueError("Bad rank: {}".format(rank))
-        return [c for c in self.cards if c.rank == rank]
+    def __getitem__(self, key):
+        return self.cards[key]
 
-    def sort(self):
-        self.cards.sort(reverse=True)
+    def __setitem__(self, key, value):
+        self.cards[key] = value
 
-    def shuffle(self):
-        random.shuffle(self.cards)
+    def __delitem__(self, key, value):
+        del self.cards[key]
+
+    def __iter__(self):
+        return iter(self.cards)
+
+    def __reversed__(self):
+        return Hand(*reversed(self.cards))
+
+    def __contains__(self, card):
+        return card in self.cards
 
     def append(self, card):
         if not isinstance(card, Card):
@@ -107,6 +112,22 @@ class Hand (object):
 
     def pop(self):
         return self.cards.pop()
+
+    def sort(self):
+        self.cards.sort(reverse=True)
+
+    def by_suit(self, suit):
+        if suit not in SUITS:
+            raise ValueError("Bad suit: {}".format(suit))
+        return [c for c in self.cards if c.suit == suit]
+
+    def by_rank(self, rank):
+        if rank not in RANKS:
+            raise ValueError("Bad rank: {}".format(rank))
+        return [c for c in self.cards if c.rank == rank]
+
+    def shuffle(self):
+        random.shuffle(self.cards)
 
     def deal(self, count):
         dealt = []

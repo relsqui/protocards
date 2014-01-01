@@ -23,13 +23,14 @@ Some basic card classes and a cribbage scoring library.
     in the constant strings.
 
 * `Hand(Card, ...)`
-    * raises `TypeError` if something other than a `Card` is added, either at
-      initialization or later.
-  * `.append(Card)` or `.extend([Card, ...])` to add cards.
-  * `.sort()` or `.shuffle()` in place.
-  * `.pop()` or `.deal(count)` to remove and return members.
-  * view subsets `.by_rank(rank)` or `.by_suit(suit)`.
-    * raises `ValueError` if rank not in `RANKS` or suit not in `SUITS`.
+  * raises `TypeError` if something other than a `Card` is added, either at
+    initialization or later.
+  * implements all the list magic methods, as well as the following:
+    * `.append(Card)` or `.extend([Card, ...])` to add cards.
+    * `.sort()` or `.shuffle()` in place.
+    * `.pop()` or `.deal(count)` to remove and return members.
+    * view subsets `.by_rank(rank)` or `.by_suit(suit)`.
+      * raises `ValueError` if rank not in `RANKS` or suit not in `SUITS`.
 
 ###### functions
 * `make_deck(shuffle = True)`

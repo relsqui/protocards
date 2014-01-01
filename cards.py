@@ -1,6 +1,9 @@
 #!/usr/bin/python
 
 
+import random, itertools, functools
+
+RANKS = "A23456789TJQK"
 RANK_NAMES = {
     "A": "Ace",
     "2": "Two",
@@ -17,6 +20,7 @@ RANK_NAMES = {
     "K": "King"
 }
 
+SUITS = "cdhs"
 SUIT_NAMES = {
     "c": "Clubs",
     "d": "Diamonds",
@@ -24,6 +28,8 @@ SUIT_NAMES = {
     "s": "Spades"
 }
 
+
+@functools.total_ordering
 class Card (object):
     def __init__(self, string):
         string = string.strip()
@@ -48,9 +54,20 @@ class Card (object):
 
         self.name = "{} of {}".format(RANK_NAMES[rank], SUIT_NAMES[suit])
 
-        def __str__(self):
-            card_string = self.rank + self.suit
-            return card_string
+    def __str__(self):
+        return self.rank + self.suit
+
+    def __repr__(self):
+        return 'Card("{}")'.format(str(self))
+
+    def __eq__(self, other):
+        return self.rank == other.rank and self.suit == other.suit
+
+    def __lt__(self, other):
+        if self.suit == other.suit:
+            return RANKS.find(self.rank) < RANKS.find(other.rank)
+        else:
+            return SUITS.find(self.suit) < SUITS.find(other.suit)
 
 
 class Hand (object):

@@ -27,7 +27,7 @@ def count_pairs(hand):
 
 def count_fifteens(hand):
     fifteens = 0
-    for i in range(2,10):
+    for i in range(2, 10):
         books = itertools.combinations(hand.cards, i)
         for b in books:
             if sum([value(c) for c in b]) == 15:

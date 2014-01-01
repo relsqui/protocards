@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
-
 import random, itertools, functools
+
 
 RANKS = "23456789TJQKA"
 RANK_NAMES = {
@@ -57,10 +57,10 @@ class Card (object):
         return self.rank == other.rank and self.suit == other.suit
 
     def __lt__(self, other):
-        if self.suit == other.suit:
-            return RANKS.find(self.rank) < RANKS.find(other.rank)
-        else:
+        if self.rank == other.rank:
             return SUITS.find(self.suit) < SUITS.find(other.suit)
+        else:
+            return RANKS.find(self.rank) < RANKS.find(other.rank)
 
 
 class Hand (object):

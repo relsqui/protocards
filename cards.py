@@ -114,12 +114,15 @@ class Hand (object):
             dealt.append(self.pop())
         return dealt
 
-
-if __name__ == "__main__":
+def make_deck(shuffle = True):
     deck = Hand()
     deck.extend([Card(rank + suit) for suit, rank in itertools.product(SUITS, RANKS)])
-    deck.shuffle()
+    if shuffle:
+        deck.shuffle()
+    return deck
 
+if __name__ == "__main__":
+    deck = make_deck()
     hand = Hand()
-    hand.extend(deck.deal(5))
+    hand.extend(deck.deal(13))
     print hand

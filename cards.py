@@ -107,23 +107,30 @@ class Hand (object):
     def shuffle(self):
         random.shuffle(self.cards)
 
+    def append(self, card):
+        if not isinstance (card, Card):
+            raise TypeError("{} is not a card!".format(card))
+        self.cards.append(card)
+
+    def extend(self, cards):
+        for c in cards:
+            self.append(c)
+
     def pop(self):
         return self.cards.pop()
+
+    def deal(self, count):
+        dealt = []
+        for i in range(count):
+            dealt.append(self.pop())
+        return dealt
 
 
 if __name__ == "__main__":
     deck = Hand()
-    for suit, rank in itertools.product(SUITS, RANKS):
-        deck.add(Card(rank + suit))
-    print deck
+    deck.extend([Card(rank + suit) for suit, rank in itertools.product(SUITS, RANKS)])
     deck.shuffle()
-    print deck
-
-    print
 
     hand = Hand()
-    for i in range(5):
-        hand.add(deck.pop())
-    print hand
-    hand.sort()
+    hand.extend(deck.deal(5))
     print hand

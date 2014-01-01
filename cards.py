@@ -38,9 +38,9 @@ class Card (object):
 
         rank = string[0].upper()
         suit = string[1].lower()
-        if rank not in "A23456789TJQK":
+        if rank not in RANKS:
             raise ValueError("Bad rank: {}".format(rank))
-        if suit not in "cdhs":
+        if suit not in SUITS:
             raise ValueError("Bad suit: {}".format(suit))
         self.rank = rank
         self.suit = suit

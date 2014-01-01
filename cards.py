@@ -78,9 +78,6 @@ class Hand (object):
                 suit_strings.append("".join([c.rank for c in cards]) + s)
         return " ".join(suit_strings)
 
-    def sort(self):
-        self.cards.sort(reverse=True)
-
     def by_suit(self, suit):
         suit = suit.lower()
         if suit not in SUITS:
@@ -92,6 +89,9 @@ class Hand (object):
         if rank not in RANKS:
             raise ValueError("Bad rank: {}".format(suit))
         return [c for c in self.cards if c.rank == rank]
+
+    def sort(self):
+        self.cards.sort(reverse=True)
 
     def shuffle(self):
         random.shuffle(self.cards)

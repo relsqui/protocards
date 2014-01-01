@@ -1,15 +1,11 @@
 #!/usr/bin/python
 
 import itertools
-from random import getrandbits
 from operator import mul
 
 import cards
 cards.RANKS = "A23456789TJQK"
 
-
-def rand_bool():
-    return not getrandbits(1)
 
 def value(card):
     if card.rank == "A":
@@ -96,6 +92,11 @@ def score_hand(hand, turned = None, crib = False, dealer = False):
 
 
 if __name__ == "__main__":
+    from random import getrandbits
+
+    def rand_bool():
+        return not getrandbits(1)
+
     deck = cards.make_deck()
     hand = cards.Hand()
     hand.extend(deck.deal(4))

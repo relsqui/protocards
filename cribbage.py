@@ -9,11 +9,12 @@ cards.RANKS = "A23456789TJQK"
 
 def value(card):
     if card.rank == "A":
-        return 1
+        value = 1
     elif card.rank.isdigit():
-        return int(card.rank)
+        value = int(card.rank)
     else:
-        return 10
+        value = 10
+    return value
 
 def score_pairs(hand):
     pairs = 0
@@ -28,7 +29,6 @@ def score_fifteens(hand):
         if sum(numbers) == target:
             subsums = 1
         elif sum(numbers) > target:
-            subsums = 0
             for i, n in enumerate(numbers):
                 if n == target:
                     subsums += 1
@@ -36,7 +36,7 @@ def score_fifteens(hand):
                     subsums += count_subsums(target - n, numbers[i+1:])
         return subsums
 
-    values = sorted([value(c) for c in hand.cards], reverse=True)
+    values = [value(c) for c in hand.cards]
     fifteens = count_subsums(15, values)
     return fifteens * 2
 
@@ -45,10 +45,10 @@ def score_runs(hand):
     for r in cards.RANKS:
         rank_counts.append(len(hand.by_rank(r)))
 
-    begin = 0
     run_slices = []
+    begin = 0
     for end in range(len(cards.RANKS)):
-        if not rank_counts[end]:
+        if rank_counts[end] == 0:
             if end > begin:
                 run_slices.append(rank_counts[begin:end])
             begin = end + 1
@@ -110,8 +110,10 @@ if __name__ == "__main__":
     hand = cards.Hand()
     hand.extend(deck.deal(4))
     turned = deck.pop()
+
     dealing = rand_bool()
     cribbing = rand_bool()
+
     score = score_hand(hand, turned=turned, dealer=dealing, crib=cribbing)
 
     if dealing:

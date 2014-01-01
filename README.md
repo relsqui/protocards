@@ -3,44 +3,69 @@
 Some basic card classes and a cribbage scoring library.
 
 
-cards.py contains:
+#### cards.py
 
-* strings `RANKS` ("234568789TJQK") and `SUITS` ("cdhs")
-* dictionaries `RANK_NAMES` and `SUIT_NAMES` mapping the above to capitalized
-  words.
-* the `Card` class, with no methods besides initializers and comparators.
-  `Card`s should be initialized with a two-character string consisting of
-  rank + suit, e.g. `Card("Jh")` would create the Jack of Hearts.
-* the `Hand` class. `Hand`s can have `Card`s `.append()`ed to them, or lists of
-  `Card`s `.extend()`ed to them. You can `.sort()` or `.shuffle()` them in
-  place, `.pop()` one off, `.deal()` several off, or (non-destructively) return
-  sublists of `Card`s `.by_rank()` or `.by_suit()`.
-* `make_deck()` returns a `Hand` consisting of a standard deck of 52 `Card`s.
-  `make_deck(shuffle=False)` will keep them in order.
+###### constants
+* `RANKS` = "23456789TJQKA"
+* `SUITS` = "cdhs"
+* dictionaries `RANK_NAMES` and `SUIT_NAMES` map the above to titlecased words.
+* override these to change the deck type, or reorder rank and suit values.
+  * any new ranks or suits should be added to `RANK_NAMES` and `SUIT_NAMES`.
+  * non-unique characters in `RANKS` and `SUITS` aren't supported and may
+    cause unusual behavior.
 
-When called from the command line, cards.py just deals a hand of 13 cards and
-prints it.
-If you want to use a nonstandard deck, just assign a character to each
-rank/suit and override the constants.
+###### classes
+* `Card(string)`
+  * init with a rank + suit string, e.g "Jh" for the Jack of Hearts.
+    * invalid init strings raise `ValueError`.
+  * no exposed methods.
+  * can be compared and sorted; will use rank first, then suit, as ordered
+    in the constant strings.
 
+* `Hand()`
+  * `.append(Card)` or `.extend([Card, ...])` to populate.
+    * raises `TypeError` if something other than a `Card` is passed.
+  * `.sort()` or `.shuffle()` in place.
+  * `.pop()` or `.deal(count)` to remove and return members.
+  * view subsets `.by_rank(rank)` or `.by_suit(suit)`.
+    * raises `ValueError` if rank not in `RANKS` or suit not in `SUITS`.
 
-cribbage.py contains:
-
-* `score_hand()`, which takes a `Hand`, an optional `turned=Card`, and optional
-  booleans `crib` and `dealer` (for scoring nobs, heels, and flushes; both
-  default to false). its components are:
-  * `score_pairs()`, `score_fifteens()`, and `score_runs()`, which each take a
-    `Hand` and return a partial score
-  * `check_flush()`, which takes a `Hand` and returns whether all cards in it
-     have the same suit
-* `value()`, which takes a `Card` and returns its point value in cribbage
-
-cribbage.py overrides `cards.RANKS`, just to reorder them so A is low.
-When called from the command line, cribbage.py deals a hand of four cards,
-turns a card, chooses randomly whether it's the dealer and whether it's
-counting a crib, and scores the hand.
+###### functions
+* `make_deck(shuffle = True)`
+   * returns a `Hand` populated with one of every unique card possible given
+     the values of `RANKS` and `SUITS`.
+   * by default, will shuffle the deck; set `shuffle = False` to keep sorted.
 
 
+#### cribbage.py
+
+###### constants
+* overrides `cards.RANKS` to "A23456789TJQK", making aces sort low.
+
+###### functions
+* `score_hand(Hand, turned = None, crib = False, dealer = False)`
+  * returns a dictionary whose keys are strings giving score type ("fifteens",
+    "pairs", "runs", "flush", "heels", or "nobs"), and whose values are score
+    numbers.
+    * `sum(score_hand(Hand).values())` gives total score.
+  * the turned card, if provided, will be included in the hand for counting
+    fifteens, pairs, and runs, and possibly flushes, heels, or nobs depending
+    on the other options. the boolean options only matter when a turned card
+    was passed:
+    * if `crib = True`, the hand will be scored like a crib, i.e. flushes will
+      only count if they include the turned card.
+    * if `dealer = True`, heels may be scored; otherwise, nobs may be scored.
+
+* `score_fifteens(Hand)`, `score_pairs(Hand)`, `score_runs(Hand)`
+  * each returns a partial score, looking at only one aspect of the hand.
+
+* `check_flush(Hand)`
+  * returns True if all cards in the hand have the same suit, False otherwise.
+
+* `value(Card)`
+  * returns the point value of the card.
+
+___
 I wrote this because I wanted to know what the cribbage score for a whole deck
 of cards was. Here's the answer, if you're curious:
 
@@ -62,3 +87,6 @@ runs for 872415232
 pairs for 156
 total: 872449916
 ```
+
+Plus 0-2 for heels/nobs, depending on the turned card and whether you're
+dealing.

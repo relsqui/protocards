@@ -130,13 +130,10 @@ class Hand (object):
         random.shuffle(self.cards)
 
     def deal(self, count):
-        dealt = []
-        try:
-            for i in range(count):
-                dealt.append(self.pop())
-        except IndexError:
-            self.cards.extend(dealt)
-            raise IndexError("Hand doesn't have {} cards in it.".format(count))
+        if count > len(self):
+            raise IndexError("Not enough cards in Hand")
+        dealt = self.cards[:count]
+        del self.cards[:count]
         return dealt
 
 

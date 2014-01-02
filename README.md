@@ -1,6 +1,6 @@
-## cribbage-scorer
+## pydeck
 
-Some basic card classes and a cribbage scoring library.
+Generalized card classes and game-specific libraries.
 
 
 ### cards.py

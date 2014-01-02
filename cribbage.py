@@ -4,17 +4,11 @@ import itertools
 from operator import mul
 
 import cards
-cards.RANKS = "A23456789TJQK"
+cards.RANKS = [cards.RANKS[-1]] + cards.RANKS[:-1]
 
 
 def value(card):
-    if card.rank == "A":
-        value = 1
-    elif card.rank.isdigit():
-        value = int(card.rank)
-    else:
-        value = 10
-    return value
+    return min(cards.RANKS.index(card.rank) + 1, 10)
 
 def score_pairs(hand):
     pairs = 0
@@ -91,9 +85,9 @@ def score_hand(hand, turned = None, crib = False, dealer = False):
             score["flush"] = len(hand)
 
     if turned and dealer:
-        if turned.rank == "J":
+        if turned.rank == cards.JACK:
             score["heels"] = 2
-    elif turned and cards.Card("J" + turned.suit) in hand:
+    elif turned and cards.Card(cards.JACK, turned.suit) in hand:
         score["nobs"] = 1
 
     return score

@@ -1,18 +1,17 @@
 #!/usr/bin/python
 
-import itertools
 from operator import mul
 
-import cards
-cards.RANKS = [cards.RANKS[-1]] + cards.RANKS[:-1]
+import standard
+standard.RANKS = [standard.RANKS[-1]] + standard.RANKS[:-1]
 
 
 def value(card):
-    return min(cards.RANKS.index(card.rank) + 1, 10)
+    return min(standard.RANKS.index(card.rank) + 1, 10)
 
 def score_pairs(hand):
     pairs = 0
-    for r in cards.RANKS:
+    for r in standard.RANKS:
         same = float(len(hand.by_rank(r)))
         pairs += (same * ((same - 1) / 2))
     return int(pairs) * 2
@@ -36,17 +35,17 @@ def score_fifteens(hand):
 
 def score_runs(hand):
     rank_counts = []
-    for r in cards.RANKS:
+    for r in standard.RANKS:
         rank_counts.append(len(hand.by_rank(r)))
 
     run_slices = []
     begin = 0
-    for end in range(len(cards.RANKS)):
+    for end in range(len(standard.RANKS)):
         if rank_counts[end] == 0:
             if end > begin:
                 run_slices.append(rank_counts[begin:end])
             begin = end + 1
-    if begin < len(cards.RANKS):
+    if begin < len(standard.RANKS):
         run_slices.append(rank_counts[begin:])
 
     run_score = 0
@@ -85,9 +84,9 @@ def score_hand(hand, turned = None, crib = False, dealer = False):
             score["flush"] = len(hand)
 
     if turned and dealer:
-        if turned.rank == cards.JACK:
+        if turned.rank == standard.JACK:
             score["heels"] = 2
-    elif turned and cards.Card(cards.JACK, turned.suit) in hand:
+    elif turned and standard.StandardCard(standard.JACK, turned.suit) in hand:
         score["nobs"] = 1
 
     return score
@@ -99,7 +98,7 @@ if __name__ == "__main__":
     def rand_bool():
         return not getrandbits(1)
 
-    deck = cards.make_deck(shuffle = True)
+    deck = standard.make_deck(shuffle = True)
     hand = deck.deal(4)
     turned = deck.pop()
 

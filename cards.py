@@ -54,7 +54,13 @@ class Card (object):
         return 'Card("{}")'.format(str(self))
 
     def __eq__(self, other):
-        return self.rank == other.rank and self.suit == other.suit
+        try:
+            return self.rank == other.rank and self.suit == other.suit
+        except AttributeError:
+            return False
+
+    def __ne__(self, other):
+        return not self == other
 
     def __lt__(self, other):
         if self.rank == other.rank:

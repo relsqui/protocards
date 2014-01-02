@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import random, itertools, functools
+import random, itertools, functools, UserList
 
 
 RANKS = "23456789TJQKA"
@@ -69,15 +69,7 @@ class Card (object):
             return RANKS.find(self.rank) < RANKS.find(other.rank)
 
 
-class Hand (object):
-    def __init__ (self, *cards):
-        self.cards = []
-        for card in cards:
-            self.append(card)
-
-    def __repr__(self):
-        return "Hand({})".format(", ".join([repr(c) for c in self.cards]))
-
+class Hand (UserList.UserList):
     def __str__(self):
         suit_strings = []
         for s in SUITS:
@@ -86,70 +78,33 @@ class Hand (object):
                 suit_strings.append("".join([c.rank for c in cards]) + s)
         return " ".join(suit_strings)
 
-    def __len__(self):
-        return len(self.cards)
-
-    def __getitem__(self, key):
-        return self.cards[key]
-
-    def __setitem__(self, key, value):
-        self.cards[key] = value
-
-    def __delitem__(self, key, value):
-        del self.cards[key]
-
-    def __iter__(self):
-        return iter(self.cards)
-
-    def __reversed__(self):
-        return Hand(*reversed(self.cards))
-
-    def __contains__(self, card):
-        return card in self.cards
-
-    def append(self, card):
-        if not isinstance(card, Card):
-            raise TypeError("{} is not a card!".format(card))
-        self.cards.append(card)
-
-    def extend(self, cards):
-        for c in cards:
-            self.append(c)
-
-    def pop(self):
-        return self.cards.pop()
-
-    def sort(self):
-        self.cards.sort(reverse=True)
+    def __repr__(self):
+        return "Hand({})".format(", ".join(map(repr, self)))
 
     def by_suit(self, suit):
-        if suit not in SUITS:
-            raise ValueError("Bad suit: {}".format(suit))
-        return [c for c in self.cards if c.suit == suit]
+        return [c for c in self if c.suit == suit]
 
     def by_rank(self, rank):
-        if rank not in RANKS:
-            raise ValueError("Bad rank: {}".format(rank))
-        return [c for c in self.cards if c.rank == rank]
+        return [c for c in self if c.rank == rank]
 
     def shuffle(self):
-        random.shuffle(self.cards)
+        random.shuffle(self)
 
     def deal(self, count):
         if count > len(self):
             raise IndexError("Not enough cards in Hand")
-        dealt = self.cards[:count]
-        del self.cards[:count]
+        dealt = self[:count]
+        del self[:count]
         return dealt
 
 
-def make_deck(shuffle = True):
-    deck = Hand()
-    deck.extend([Card(rank + suit) for suit, rank in itertools.product(SUITS, RANKS)])
+def make_deck(shuffle = False):
+    deck = Hand([Card(rank + suit) for suit, rank in itertools.product(SUITS, RANKS)])
     if shuffle:
         deck.shuffle()
     return deck
 
 
 if __name__ == "__main__":
-    print Hand(*make_deck().deal(13))
+    deck = make_deck(shuffle = True)
+    print deck.deal(13)

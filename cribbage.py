@@ -36,7 +36,7 @@ def score_fifteens(hand):
                     subsums += count_subsums(target - n, numbers[i+1:])
         return subsums
 
-    values = [value(c) for c in hand.cards]
+    values = [value(c) for c in hand]
     fifteens = count_subsums(15, values)
     return fifteens * 2
 
@@ -62,14 +62,13 @@ def score_runs(hand):
     return run_score
 
 def check_flush(hand):
-    if len(hand.cards) == len(hand.by_suit(hand.cards[0].suit)):
+    if len(hand) == len(hand.by_suit(hand[0].suit)):
         return True
     return False
 
 def score_hand(hand, turned = None, crib = False, dealer = False):
     score = {}
-    test_hand = cards.Hand()
-    test_hand.extend(hand.cards)
+    test_hand = hand
     if turned:
         test_hand.append(turned)
 
@@ -86,15 +85,15 @@ def score_hand(hand, turned = None, crib = False, dealer = False):
         score["runs"] = runs
 
     if check_flush(hand):
-        if turned and hand.cards[0].suit == turned.suit:
-            score["flush"] = len(hand.cards) + 1
+        if turned and hand[0].suit == turned.suit:
+            score["flush"] = len(hand) + 1
         elif not turned or not crib:
-            score["flush"] = len(hand.cards)
+            score["flush"] = len(hand)
 
     if turned and dealer:
         if turned.rank == "J":
             score["heels"] = 2
-    elif turned and cards.Card("J" + turned.suit) in hand.cards:
+    elif turned and cards.Card("J" + turned.suit) in hand:
         score["nobs"] = 1
 
     return score
@@ -106,9 +105,8 @@ if __name__ == "__main__":
     def rand_bool():
         return not getrandbits(1)
 
-    deck = cards.make_deck()
-    hand = cards.Hand()
-    hand.extend(deck.deal(4))
+    deck = cards.make_deck(shuffle = True)
+    hand = deck.deal(4)
     turned = deck.pop()
 
     dealing = rand_bool()

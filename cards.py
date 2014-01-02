@@ -131,8 +131,12 @@ class Hand (object):
 
     def deal(self, count):
         dealt = []
-        for i in range(count):
-            dealt.append(self.pop())
+        try:
+            for i in range(count):
+                dealt.append(self.pop())
+        except IndexError:
+            self.cards.extend(dealt)
+            raise IndexError("Hand doesn't have {} cards in it.".format(count))
         return dealt
 
 

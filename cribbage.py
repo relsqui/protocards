@@ -84,9 +84,8 @@ def score_hand(hand, turned = None, crib = False, dealer = False):
         elif not turned or not crib:
             score["flush"] = len(hand)
 
-    if turned and dealer:
-        if turned.rank == cards.JACK:
-            score["heels"] = 2
+    if turned and dealer and turned.rank == cards.JACK:
+        score["heels"] = 2
     elif turned and cards.Card(cards.JACK, turned.suit) in hand:
         score["nobs"] = 1
 

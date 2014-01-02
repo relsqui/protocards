@@ -6,24 +6,28 @@ Some basic card classes and a cribbage scoring library.
 ### cards.py
 
 ##### constants
-* `RANKS` = "23456789TJQKA"
-* `SUITS` = "cdhs"
-* dictionaries `RANK_NAMES` and `SUIT_NAMES` map the above to titlecased words.
-* override these to reorder rank and suit values, or to change the deck type or
-  display characters.
-  * any new ranks or suits should be added to `RANK_NAMES` and `SUIT_NAMES`.
-  * non-unique characters in `RANKS` and `SUITS` aren't supported and may
-    cause unusual behavior.
+* `TWO` through `NINE`, `JACK`, `QUEEN`, `KING`, `ACE`, `CLUB`, `DIAMOND`,
+  `HEART`, and `SPADE` are instances of `CardProperty` (see below).
+* `RANKS` is a list of `TWO` through `ACE`, in that order.
+* `SUITS` is a list of `CLUB`, `DIAMOND`, `HEART`, and `SPADE`, in that order.
+* override these to reorder or rename ranks and suits, or change other card
+  attributes.
 
 ##### classes
-* `Card(string)`
-  * initialize with a two-character string of which the first comes from
-    `RANKS` and the second comes from `SUITS`, e.g "Jh" for the Jack of Hearts.
-    * invalid rank + suit strings raise `ValueError`.
+* `CardProperty(short, name, plural = None)`
+  * initialize with two or three strings: an abbreviation, a full name, and, 
+    optionally, the plural of the name.
+    * if no plural is provided, `name + "s"` will be used.
+  * no exposed methods.
+  * attributes are just `short`, `name`, and `plural`.
+
+* `Card(rank, suit)`
+  * initialize with a `CardProperty` from `RANKS` and another one from `SUITS`,
+    e.g. `Card(JACK, HEART)` to make a Jack of Hearts.
   * no exposed methods.
   * attributes:
-    * `.rank` and `.suit` (single characters, as initialized).
-    * `.name` = "Rank of Suit" as defined by `RANK_NAMES` and `SUIT_NAMES`
+    * `.rank` and `.suit`, each a `CardProperty`
+    * `.name` = "Rank of Suit", using rank.name.title() and suit.plural.title().
   * can be compared and sorted; will use rank first, then suit, as ordered
     in `RANKS` and `SUITS`.
 
@@ -35,8 +39,8 @@ Some basic card classes and a cribbage scoring library.
   * additional methods:
     * `.shuffle()` is the opposite of `.sort()` (and also works in-place)
     * `.deal(count)` pops off `count` items and returns them as a `Hand`.
-    * `.by_rank(rank)` and `.by_suit(suit)` return a new `Hand` containing all
-      cards in the first `Hand` of the given rank or suit.
+    * `.by_rank(rank)` and `.by_suit(suit)` return a new `Hand` composed of the
+      cards in this `Hand` which have the rank or suit given.
   * no exposed attributes.
 
 ##### functions
@@ -49,7 +53,7 @@ Some basic card classes and a cribbage scoring library.
 ### cribbage.py
 
 ##### constants
-* overrides `cards.RANKS` to "A23456789TJQK", making aces sort low.
+* overrides `cards.RANKS` to put `cards.ACE` at the beginning.
 
 ##### functions
 * `score_hand(Hand, turned = None, crib = False, dealer = False)`
@@ -69,7 +73,7 @@ Some basic card classes and a cribbage scoring library.
   * each returns a partial score, looking at only one aspect of the hand.
 
 * `check_flush(Hand)`
-  * returns `True` if all cards in the hand have the same suit, `False`
+  * returns `True` if all cards in the hand have the same `.suit`, `False`
     otherwise.
 
 * `value(Card)`
@@ -87,7 +91,7 @@ Some basic card classes and a cribbage scoring library.
 9d 84h Js
 >>> turned = deck.pop()
 >>> print turned
-9s
+Nine of Spades
 >>> 
 >>> import cribbage
 >>> cribbage.score_hand(hand, turned = turned)

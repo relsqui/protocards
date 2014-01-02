@@ -33,7 +33,7 @@ Implements standard playing cards, with four suits, thirteen ranks, etc.
 
 ##### constants
 * `TWO` through `NINE`, `JACK`, `QUEEN`, `KING`, `ACE`, `CLUB`, `DIAMOND`,
-  `HEART`, and `SPADE` are instances of `CardProperty` (see below).
+  `HEART`, and `SPADE` are instances of `CardProperty`.
 * `RANKS` is a list of `TWO` through `ACE`, in that order.
 * `SUITS` is a list of `CLUB`, `DIAMOND`, `HEART`, and `SPADE`, in that order.
 

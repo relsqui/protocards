@@ -1,9 +1,5 @@
-"""Simple tools for building card games.
+"""Simple tools for building card games."""
 
-Modules
--------
-base     : Abstract classes to extend for specific games.
-standard : Definitions for a standard deck of 52 playing cards.
-cribbage : Cribbage game scoring functions.
-
-"""
+__title__ = 'pydeck'
+__version__ = '0.1.0'
+__author__ = 'Finn R. Ellis'

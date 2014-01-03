@@ -26,15 +26,16 @@ class CardProperty(EqualityMixin):
     attributes of a card, or simply categories of card with no data
     associated with them. See `Rank` and `Suit` in `pydeck.standard`.
 
-    Parameters
-    ----------
-        name   : String; describes the property.
-        plural : (optional) String; plural form of the name.
-                 Will be set to `name` + "s" if not specified.
-        short  : (optional) String; short form of the name.
-                 Will be set to `name[0]` if not specified.
+    Required Argument:
+        name   - String; describes the property.
 
-    Attributes are the same as parameters.
+    Optional Arguments:
+        plural - String; plural form of the name. Will be set to
+                 `name` + "s" if not specified.
+        short  - String; short form of the name. Will be set to
+                 `name[0]` if not specified.
+
+    The values of all three arguments are provided as attributes.
 
     """
 
@@ -61,11 +62,8 @@ class Hand(UserList.UserList):
     """List-like class for storing and dealing cards.
 
     `Hand` extends `UserList` and has the behavior and methods of a list
-    in addition to those listed below.
-
-    Parameters
-    ----------
-    data        : (optional) Sequence; initializes contents.
+    in addition to those listed below. Initialize optionally with a
+    sequence.
 
     """
 

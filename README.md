@@ -13,7 +13,7 @@ AJ6s 2h 3c
 Ace of Spades
 ```
 
-The **cribbage** module implements some example game logic using pydeck.
+The cribbage module implements some example game logic using pydeck.
 
 ```
 >>> from pydeck.standard import make_deck
@@ -32,8 +32,8 @@ Six of Spades
 
 ### package summary
 
-#### base.py
-*base* is for abstract classes which can be used on their own in
+#### base
+base is for abstract classes which can be used on their own in
 simple projects or subclassed to build more complex mechanics.
 
 A `CardProperty` is a category a card can belong to, like "spade"
@@ -49,8 +49,8 @@ methods as well as these:
   as a new `Hand`.
 
 
-### standard.py
-*standard* implements the standard 52-card deck. It defines `Rank`
+#### standard
+standard implements the standard 52-card deck. It defines `Rank`
 and `Suit` as card properties, and a list of each: `RANKS` and
 `SUITS`. These lists define the sorting order for cards with those
 properties. Specific ranks and suits can also be accessed as
@@ -77,8 +77,8 @@ RANKS and SUITS. By default, it is returned still in order; pass
 `shuffle=True` to have it shuffled first.
 
 
-### cribbage.py
-*cribbage* implements the hand-scoring rules of cribbage (but not the
+#### cribbage
+cribbage implements the hand-scoring rules of cribbage (but not the
 play rules). Its main interface is `score_hand()`, which takes a
 StandardHand and returns a dictionary of ("score-type": points) pairs.
 You can also pass it `turned=StandardCard` and the boolean arguments

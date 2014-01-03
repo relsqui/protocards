@@ -1,11 +1,8 @@
 """Tools and definitions for a standard deck of 52 cards.
 
-Constants
----------
-TWO, THREE, ... NINE : `Rank`s with numeric abbreviations.
-TEN, JACK, ... ACE   : `Rank`s with single-letter abbreviations.
-CLUBS, ... SPADES    : `Suit`s, with lowercase letter abbreviations.
-RANKS, SUITS         : Lists of the above, in ascending order.
+In addition to the classes and functions listed, provides constants for
+the ranks TWO through ACE and suits CLUB through SPADE, along with a
+list of each: RANKS and SUITS.
 
 """
 
@@ -60,17 +57,13 @@ class StandardCard(base.EqualityMixin):
 
     """A regular playing card with a rank and a suit.
 
-    Parameters
-    ----------
-    rank : `Rank`; must be in `RANKS`.
-    suit : `Suit`; must be in `SUITS`.
+    Initialize with members of `RANKS` and `SUITS`. Raises ValueError
+    if anything else is provided.
 
-    Attributes
-    ----------
-    rank, suit : As above.
-    name       : String; "Rank of Suits", in title case.
-    short      : String; `self.rank + self.suit`, e.g. "2c".
-
+    Attributes:
+        rank, suit - As provided.
+        name       - "Rank of Suits" in title case.
+        short      - rank.short + suit.short
     """
 
     def __init__(self, rank, suit):
@@ -98,7 +91,9 @@ class StandardCard(base.EqualityMixin):
 
 class StandardHand(base.Hand):
 
-    """A hand of standard playing cards."""
+    """A hand of standard playing cards.
+
+    Raises TypeError if a non-`StandardCard` is passed in."""
 
     def __init__(self, *args, **kwargs):
         super(StandardHand, self).__init__(*args, **kwargs)

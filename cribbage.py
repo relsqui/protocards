@@ -1,20 +1,4 @@
-"""Functions for scoring cribbage hands.
-
-Constants
----------
-RANKS : A list of `pydeck.standard.Rank`s, ace low through king high.
-SUITS : A list of `pydeck.standard.Suit`s in bridge order.
-
-Functions
----------
-score_hand     : Calculate the score for a hand, including nobs/heels.
-value          : Calculate the point value of a single card.
-score_fifteens : Count points in a hand for fifteens only.
-score_pairs    : Count points in a hand for pairs only.
-score_runs     : Count points in a hand for runs only.
-check_flush    : Return whether all cards in the hand are the same suit.
-
-"""
+"""Functions for scoring cribbage hands."""
 
 from operator import mul
 
@@ -91,25 +75,23 @@ def check_flush(hand):
 def score_hand(hand, turned=None, crib=False, dealer=False):
     """Calculate the cribbage score of a hand.
 
-    Parameters
-    ----------
-    hand   : `pydeck.standard.StandardHand`; the hand to count.
-    turned : (optional) `pydeck.standard.StandardCard`; the turned
-             card. Will be included in scoring if given, and can
-             provide heels and nobs points.
-    crib   : (optional) Boolean; whether to score this hand as a crib.
-             Flushes in crib hands only count if they include the
-             turned card. Defaults to `False` and ignored if no turned
-             card given.
-    dealer : (optional) Boolean; whether to score this hand as the
-             dealer's. Only the dealer can earn points for heels.
-             Defaults to `False` and ignored if no turned card given.
+    Required Argument:
+    hand   - `pydeck.standard.StandardHand`; the hand to count.
 
-    Returns
-    -------
-    score  : Dictionary; keys are types of points ("fifteens", "pairs",
-             "runs", "flush", "heels", and "nobs") and values are the
-             points earned of each type.
+    Optional Arguments:
+    turned - `pydeck.standard.StandardCard`; the turned card. Will be
+             included in scoring if given, and can provide heels and
+             nobs points.
+    crib   - Boolean; whether to score this hand as a crib. Flushes in
+             crib hands only count if they include the turned card.
+             Defaults to `False` and ignored if no turned card given.
+    dealer - Boolean; whether to score this hand as the dealer's. Only
+             the dealer can earn points for heels. Defaults to `False`
+             and ignored if no turned card given.
+
+    Returns a dictionary whose keys are the types of score ("fifteens",
+    "pairs", "runs", "flush", "heels", and "nobs") and whose values are
+    the points earned of each type.
 
     """
     score = {"fifteens": 0, "pairs": 0, "runs": 0, "flush": 0,

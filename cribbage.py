@@ -3,15 +3,16 @@
 from operator import mul
 
 import standard
-standard.RANKS = [standard.RANKS[-1]] + standard.RANKS[:-1]
+RANKS = [standard.RANKS[-1]] + standard.RANKS[:-1]
+SUITS = standard.SUITS
 
 
 def value(card):
-    return min(standard.RANKS.index(card.rank) + 1, 10)
+    return min(RANKS.index(card.rank) + 1, 10)
 
 def score_pairs(hand):
     pairs = 0
-    for r in standard.RANKS:
+    for r in RANKS:
         same = float(len(hand.by_rank(r)))
         pairs += (same * ((same - 1) / 2))
     return int(pairs) * 2
@@ -35,17 +36,17 @@ def score_fifteens(hand):
 
 def score_runs(hand):
     rank_counts = []
-    for r in standard.RANKS:
+    for r in RANKS:
         rank_counts.append(len(hand.by_rank(r)))
 
     run_slices = []
     begin = 0
-    for end in range(len(standard.RANKS)):
+    for end in range(len(RANKS)):
         if rank_counts[end] == 0:
             if end > begin:
                 run_slices.append(rank_counts[begin:end])
             begin = end + 1
-    if begin < len(standard.RANKS):
+    if begin < len(RANKS):
         run_slices.append(rank_counts[begin:])
 
     run_score = 0

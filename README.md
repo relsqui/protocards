@@ -69,7 +69,8 @@ Implements standard playing cards, with four suits, thirteen ranks, etc.
 ### cribbage.py
 
 ##### constants
-* overrides `standard.RANKS` to put `standard.ACE` at the beginning.
+* `RANKS` is `standard.RANKS` but with `standard.ACE` at the beginning.
+* `SUITS` is the same as `standard.SUITS`.
 
 ##### functions
 * `score_hand(StandardHand, turned = None, crib = False, dealer = False)`

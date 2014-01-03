@@ -45,6 +45,6 @@ class Hand(UserList.UserList):
     def deal(self, count):
         if count > len(self):
             raise IndexError("Not enough cards in Hand")
-        dealt = self[:count]
-        del self[:count]
+        dealt = self[-count:]
+        del self[-count:]
         return dealt

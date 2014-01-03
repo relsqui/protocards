@@ -25,7 +25,8 @@ class TestCribbage(unittest.TestCase):
             self.assertEqual(cribbage.value(card), values[card.rank.short])
 
     def test_pairs(self):
-        self.assertEqual(cribbage.score_pairs(self.deck), self.dscore["pairs"])
+        self.assertEqual(cribbage.score_pairs(self.deck),
+                         self.dscore["pairs"])
         self.assertEqual(cribbage.score_pairs(self.spades),
                          self.sscore["pairs"])
         hand = self.deck.by_rank(standard.ACE)
@@ -53,8 +54,10 @@ class TestCribbage(unittest.TestCase):
         self.assertEqual(cribbage.score_fifteens(hand), 40)
 
     def test_runs(self):
-        self.assertEqual(cribbage.score_runs(self.deck), self.dscore["runs"])
-        self.assertEqual(cribbage.score_runs(self.spades), self.sscore["runs"])
+        self.assertEqual(cribbage.score_runs(self.deck),
+                         self.dscore["runs"])
+        self.assertEqual(cribbage.score_runs(self.spades),
+                         self.sscore["runs"])
         hand = self.deck.by_rank(standard.ACE)
         self.assertEqual(cribbage.score_runs(hand), 0)
         hand += self.deck.by_rank(standard.TWO)

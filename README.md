@@ -40,6 +40,7 @@ Implements standard playing cards, with four suits, thirteen ranks, etc.
   * `Suit` lowercases its `.short`.
 
 * `StandardCard(Rank, Suit)`
+  * initialize with a member of `RANKS` and a member of `SUITS`.
   * no exposed methods.
   * properties:
     * `.rank` (its `Rank`) and `.suit` (its `Suit`).
@@ -73,8 +74,8 @@ Implements standard playing cards, with four suits, thirteen ranks, etc.
 
 ##### functions
 * `score_hand(standard.StandardHand, turned=None, crib=False, dealer=False)`
-  * returns a dictionary whose keys are ("fifteens", "pairs", "runs", "flush",
-    "heels", and "nobs"), and whose values are the points earned by that hand
+  * returns a dictionary whose keys are "fifteens", "pairs", "runs", "flush",
+    "heels", and "nobs", and whose values are the points earned by that hand
     for each type of score.
     * `sum(score_hand(...).values())` gives total score.
   * the turned card, if provided, adds some additional scoring potential:

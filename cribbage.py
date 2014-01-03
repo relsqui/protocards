@@ -3,6 +3,8 @@
 from operator import mul
 
 import standard
+
+
 RANKS = [standard.RANKS[-1]] + standard.RANKS[:-1]
 SUITS = standard.SUITS
 
@@ -10,12 +12,14 @@ SUITS = standard.SUITS
 def value(card):
     return min(RANKS.index(card.rank) + 1, 10)
 
+
 def score_pairs(hand):
     pairs = 0
     for r in RANKS:
         same = float(len(hand.by_rank(r)))
         pairs += (same * ((same - 1) / 2))
     return int(pairs) * 2
+
 
 def score_fifteens(hand):
     def count_subsums(target, numbers):
@@ -33,6 +37,7 @@ def score_fifteens(hand):
     values = [value(c) for c in hand]
     fifteens = count_subsums(15, values)
     return fifteens * 2
+
 
 def score_runs(hand):
     rank_counts = []
@@ -55,29 +60,23 @@ def score_runs(hand):
             run_score += reduce(mul, run, len(run))
     return run_score
 
+
 def check_flush(hand):
     if len(hand) == len(hand.by_suit(hand[0].suit)):
         return True
     return False
 
-def score_hand(hand, turned = None, crib = False, dealer = False):
+
+def score_hand(hand, turned=None, crib=False, dealer=False):
     score = {"fifteens": 0, "pairs": 0, "runs": 0, "flush": 0,
              "heels": 0, "nobs": 0}
     test_hand = standard.StandardHand(hand)
     if turned:
         test_hand.append(turned)
 
-    fifteens = score_fifteens(test_hand)
-    if fifteens:
-        score["fifteens"] = fifteens
-
-    pairs = score_pairs(test_hand)
-    if pairs:
-        score["pairs"] = pairs
-
-    runs = score_runs(test_hand)
-    if runs:
-        score["runs"] = runs
+    score["fifteens"] = score_fifteens(test_hand)
+    score["pairs"] = score_pairs(test_hand)
+    score["runs"] = score_runs(test_hand)
 
     if check_flush(hand):
         if turned and hand[0].suit == turned.suit:
@@ -115,7 +114,7 @@ if __name__ == "__main__":
     print "turned:", turned
     print hand
     print
-    for k, v in score.items():
-        if v:
-            print k, "for", v
+    for reason, points in score.items():
+        if points:
+            print reason, "for", points
     print "total:", sum(score.values())

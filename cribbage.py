@@ -1,8 +1,24 @@
-#!/usr/bin/python
+"""Functions for scoring cribbage hands.
+
+Constants
+---------
+RANKS : A list of `pydeck.standard.Rank`s, ace low through king high.
+SUITS : A list of `pydeck.standard.Suit`s in bridge order.
+
+Functions
+---------
+score_hand     : Calculate the score for a hand, including nobs/heels.
+value          : Calculate the point value of a single card.
+score_fifteens : Count points in a hand for fifteens only.
+score_pairs    : Count points in a hand for pairs only.
+score_runs     : Count points in a hand for runs only.
+check_flush    : Return whether all cards in the hand are the same suit.
+
+"""
 
 from operator import mul
 
-import standard
+from pydeck import standard
 
 
 RANKS = [standard.RANKS[-1]] + standard.RANKS[:-1]
@@ -10,10 +26,12 @@ SUITS = standard.SUITS
 
 
 def value(card):
+    """Calculate the point value of a single card; returns an int."""
     return min(RANKS.index(card.rank) + 1, 10)
 
 
 def score_pairs(hand):
+    """Calculate the points for pairs in a hand; returns an int."""
     pairs = 0
     for r in RANKS:
         same = float(len(hand.by_rank(r)))
@@ -22,6 +40,7 @@ def score_pairs(hand):
 
 
 def score_fifteens(hand):
+    """Calculate the points for fifteens in a hand; returns an int."""
     def count_subsums(target, numbers):
         subsums = 0
         if sum(numbers) == target:
@@ -40,6 +59,7 @@ def score_fifteens(hand):
 
 
 def score_runs(hand):
+    """Calculate the points for runs in a hand; returns an int."""
     rank_counts = []
     for r in RANKS:
         rank_counts.append(len(hand.by_rank(r)))
@@ -62,12 +82,36 @@ def score_runs(hand):
 
 
 def check_flush(hand):
+    """Check whether the hand has a flush; returns a boolean."""
     if len(hand) == len(hand.by_suit(hand[0].suit)):
         return True
     return False
 
 
 def score_hand(hand, turned=None, crib=False, dealer=False):
+    """Calculate the cribbage score of a hand.
+
+    Parameters
+    ----------
+    hand   : `pydeck.standard.StandardHand`; the hand to count.
+    turned : (optional) `pydeck.standard.StandardCard`; the turned
+             card. Will be included in scoring if given, and can
+             provide heels and nobs points.
+    crib   : (optional) Boolean; whether to score this hand as a crib.
+             Flushes in crib hands only count if they include the
+             turned card. Defaults to `False` and ignored if no turned
+             card given.
+    dealer : (optional) Boolean; whether to score this hand as the
+             dealer's. Only the dealer can earn points for heels.
+             Defaults to `False` and ignored if no turned card given.
+
+    Returns
+    -------
+    score  : Dictionary; keys are types of points ("fifteens", "pairs",
+             "runs", "flush", "heels", and "nobs") and values are the
+             points earned of each type.
+
+    """
     score = {"fifteens": 0, "pairs": 0, "runs": 0, "flush": 0,
              "heels": 0, "nobs": 0}
     test_hand = standard.StandardHand(hand)

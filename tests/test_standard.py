@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import unittest
+import random
 
 from pydeck import standard
 
@@ -45,6 +46,8 @@ class TestStandard(unittest.TestCase):
         self.assertTrue(cards["Ah"] >= cards["2h"])
         self.assertNotEqual(cards["Ah"], cards["2h"])
 
+    def test_hand_bad_type(self):
+        self.assertRaises(TypeError, standard.StandardHand, [5])
 
     def test_hand_str(self):
         deck = standard.make_deck()
@@ -68,3 +71,9 @@ class TestStandard(unittest.TestCase):
                 hand.append(standard.StandardCard(rank, suit))
         deck = standard.make_deck()
         self.assertEqual(deck, hand)
+
+    def test_make_deck_shuffle(self):
+        random.seed(0)
+        unshuffled = standard.make_deck(shuffle=False)
+        shuffled = standard.make_deck(shuffle=True)
+        self.assertNotEqual(unshuffled, shuffled)

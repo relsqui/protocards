@@ -12,8 +12,7 @@ class TestStandard(unittest.TestCase):
         self.assertEqual(suit.plural, "FOOs")
         self.assertEqual(suit.short, "f")
 
-
-    def test_card_good_init(self):
+    def test_card_init(self):
         good_args = [(standard.ACE, standard.SPADE),
                      (standard.RANKS[12], standard.SUITS[3])]
         for args in good_args:
@@ -23,15 +22,10 @@ class TestStandard(unittest.TestCase):
             self.assertEqual(card.short, "As")
             self.assertEqual(card.name, "Ace of Spades")
 
-    def test_card_bad_arg_type(self):
+    def test_card_init_wrongtype(self):
         wrong_type = [(standard.SPADE, standard.ACE), ("foo", "bar"), (1, 2)]
         for args in wrong_type:
             self.assertRaises(ValueError, standard.StandardCard, *args)
-
-    def test_card_bad_arg_count(self):
-        wrong_count = [(), (standard.ACE), (standard.ACE, standard.SPADE, 0)]
-        for args in wrong_count:
-            self.assertRaises(TypeError, standard.StandardCard, args)
 
     def test_card_equality(self):
         card_a = standard.StandardCard(standard.ACE, standard.SPADE)

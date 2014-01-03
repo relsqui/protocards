@@ -1,17 +1,20 @@
 #!/usr/bin/python
 
-import functools, itertools
+import functools
+import itertools
 
 import base
 
 
-class Rank (base.CardProperty):
+class Rank(base.CardProperty):
     pass
 
-class Suit (base.CardProperty):
+
+class Suit(base.CardProperty):
     def __init__(self, *args, **kwargs):
         super(Suit, self).__init__(*args, **kwargs)
         self.short = self.short.lower()
+
 
 TWO = Rank("Two", short="2")
 THREE = Rank("Three", short="3")
@@ -32,13 +35,18 @@ DIAMOND = Suit("Diamond")
 HEART = Suit("Heart")
 SPADE = Suit("Spade")
 
-RANKS = [TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE]
+RANKS = [TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT,
+         NINE, TEN, JACK, QUEEN, KING, ACE]
 SUITS = [CLUB, DIAMOND, HEART, SPADE]
 
 
 @functools.total_ordering
-class StandardCard (base.EqualityMixin):
+class StandardCard(base.EqualityMixin):
     def __init__(self, rank, suit):
+        if rank not in RANKS:
+            raise ValueError("{} is not in RANKS".format(rank))
+        if suit not in SUITS:
+            raise ValueError("{} is not in SUITS".format(suit))
         self.rank = rank
         self.suit = suit
         self.short = self.rank.short + self.suit.short
@@ -57,17 +65,25 @@ class StandardCard (base.EqualityMixin):
             return RANKS.index(self.rank) < RANKS.index(other.rank)
 
 
-class StandardHand (base.Hand):
+class StandardHand(base.Hand):
+    def __init__(self, *args, **kwargs):
+        super(StandardHand, self).__init__(*args, **kwargs)
+        for c in self:
+            if not isinstance(c, StandardCard):
+                raise TypeError("{} is not a StandardCard".format(c))
+
     def __str__(self):
         suit_strings = []
-        for s in SUITS:
-            cards = sorted(self.by_suit(s), reverse=True)
+        for suit in reversed(SUITS):
+            cards = sorted(self.by_suit(suit), reverse=True)
             if cards:
-                suit_strings.append("".join([c.rank.short for c in cards]) + s.short)
+                ranks = "".join([c.rank.short for c in cards])
+                suit_strings.append(ranks + suit.short)
         return " ".join(suit_strings)
 
     def __repr__(self):
-        return "<{}:{}>".format(self.__class__.__name__, ",".join([c.short for c in self]))
+        return "<{}:{}>".format(self.__class__.__name__,
+                                ",".join([c.short for c in self]))
 
     def by_suit(self, suit):
         return self.__class__([c for c in self if c.suit == suit])
@@ -77,7 +93,8 @@ class StandardHand (base.Hand):
 
 
 def make_deck(shuffle = False):
-    deck = StandardHand([StandardCard(rank, suit) for suit, rank in itertools.product(SUITS, RANKS)])
+    deck = StandardHand([StandardCard(rank, suit)
+                         for suit, rank in itertools.product(SUITS, RANKS)])
     if shuffle:
         deck.shuffle()
     return deck

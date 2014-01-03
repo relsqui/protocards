@@ -1,18 +1,22 @@
 #!/usr/bin/python
 
-import random, UserList
+import random
+import UserList
 
 
-class EqualityMixin (object):
+class EqualityMixin(object):
     def __eq__(self, other):
-        return self.__dict__ == other.__dict__
+        try:
+            return self.__dict__ == other.__dict__
+        except AttributeError:
+            return False
 
     def __ne__(self, other):
         return not self == other
 
 
-class CardProperty (EqualityMixin):
-    def __init__(self, name, plural = None, short = None):
+class CardProperty(EqualityMixin):
+    def __init__(self, name, plural=None, short=None):
         self.name = name
         if plural is None:
             self.plural = self.name + "s"
@@ -30,9 +34,10 @@ class CardProperty (EqualityMixin):
         return "<{}:{}>".format(self.__class__.__name__, self.short)
 
 
-class Hand (UserList.UserList):
+class Hand(UserList.UserList):
     def __repr__(self):
-        return "<{}({}):{}>".format(self.__class__.__name__, len(self), ",".join(map(str, self)))
+        return "<{}({}):{}>".format(self.__class__.__name__,
+                                    len(self), ",".join(map(str, self)))
 
     def shuffle(self):
         random.shuffle(self)

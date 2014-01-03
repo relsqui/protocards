@@ -62,7 +62,7 @@ def check_flush(hand):
 
 def score_hand(hand, turned = None, crib = False, dealer = False):
     score = {}
-    test_hand = hand
+    test_hand = standard.StandardHand(hand)
     if turned:
         test_hand.append(turned)
 

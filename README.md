@@ -72,9 +72,9 @@ Implements standard playing cards, with four suits, thirteen ranks, etc.
 
 ##### functions
 * `score_hand(standard.StandardHand, turned=None, crib=False, dealer=False)`
-  * returns a dictionary whose keys are strings giving score type ("fifteens",
-    "pairs", "runs", "flush", "heels", or "nobs"), and whose values are score
-    numbers.
+  * returns a dictionary whose keys are ("fifteens", "pairs", "runs", "flush",
+    "heels", and "nobs"), and whose values are the points earned by that hand
+    for each type of score.
     * `sum(score_hand(...).values())` gives total score.
   * the turned card, if provided, adds some additional scoring potential:
     * it's included in the hand for counting fifteens, pairs, and runs.

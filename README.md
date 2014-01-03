@@ -4,6 +4,7 @@ is a library for writing card games in python. Basic usage is simple:
 
 ```
 >>> from pydeck.standard import make_deck
+>>>
 >>> deck = make_deck(shuffle=True)
 >>> hand = deck.deal(5)
 >>> print hand
@@ -17,6 +18,7 @@ The **cribbage** module implements some example game logic using pydeck.
 ```
 >>> from pydeck.standard import make_deck
 >>> from pydeck.cribbage import score_hand
+>>>
 >>> deck = make_deck(shuffle=True)
 >>> hand = deck.deal(4)
 >>> turned = deck.pop()
@@ -31,8 +33,8 @@ Six of Spades
 ### package summary
 
 #### base.py
-**base** is for abstract classes which can be used on their own in
-simple projects or subclassed to build more complete games.
+*base* is for abstract classes which can be used on their own in
+simple projects or subclassed to build more complex mechanics.
 
 A `CardProperty` is a category a card can belong to, like "spade"
 or "three" or "green" or "flying." This base class only has a name;
@@ -48,7 +50,7 @@ methods as well as these:
 
 
 ### standard.py
-**standard** implements the standard 52-card deck. It defines `Rank`
+*standard* implements the standard 52-card deck. It defines `Rank`
 and `Suit` as card properties, and a list of each: `RANKS` and
 `SUITS`. These lists define the sorting order for cards with those
 properties. Specific ranks and suits can also be accessed as
@@ -67,7 +69,7 @@ methods:
  * `.by_rank(Rank)` returns a new StandardHand containing the cards
    from your hand which have the given rank. It does *not* remove them
    from your hand.
- * `.by_suit(Suit)` does the same thing, but for suits.
+ * `.by_suit(Suit)` is the same thing but for suits.
 
 Finally, `make_deck()` is a top-level function which just creates a full
 deck of cards, defined as one of each possible pair of the members of
@@ -76,7 +78,7 @@ RANKS and SUITS. By default, it is returned still in order; pass
 
 
 ### cribbage.py
-**cribbage** implements the hand-scoring rules of cribbage (not the
+*cribbage* implements the hand-scoring rules of cribbage (but not the
 play rules). Its main interface is `score_hand()`, which takes a
 StandardHand and returns a dictionary of ("score-type": points) pairs.
 You can also pass it `turned=StandardCard` and the boolean arguments
@@ -92,23 +94,23 @@ value of that card (for fifteens and the play).
 ___
 
 I originally wrote this because I wanted to know what the cribbage
-score for a whole deck of cards was. Here's the answer, if you're
-curious:
+score for a whole deck of cards was. Now I can find out!
 
 ```
 >>> from pydeck import standard, cribbage
+>>>
 >>> def score_deck():
 ...     score = cribbage.score_hand(standard.make_deck())
 ...     for key, value in score.items():
 ...             if value:
-...                 print key, "for", value
-...     print "total:", sum(score.values())
+...                 print "{} for {:,}".format(key, value)
+...     print "total: {:,}".format(sum(score.values()))
 ... 
 >>> score_deck()
-runs for 872415232
-fifteens for 34528
+runs for 872,415,232
+fifteens for 34,528
 pairs for 156
-total: 872449916
+total: 872,449,916
 ```
 
 Plus 1-2 for heels/nobs, depending on the turned card and whether you're

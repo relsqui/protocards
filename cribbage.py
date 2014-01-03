@@ -116,5 +116,6 @@ if __name__ == "__main__":
     print hand
     print
     for k, v in score.items():
-        print k, "for", v
+        if v:
+            print k, "for", v
     print "total:", sum(score.values())

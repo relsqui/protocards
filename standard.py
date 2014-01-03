@@ -62,6 +62,12 @@ class StandardCard (base.EqualityMixin):
 
 
 class StandardHand (base.Hand):
+    def __init__(self, *args, **kwargs):
+        super(StandardHand, self).__init__(*args, **kwargs)
+        for c in self:
+            if not isinstance(c, StandardCard):
+                raise TypeError("{} is not a StandardCard".format(c))
+
     def __str__(self):
         suit_strings = []
         for s in reversed(SUITS):

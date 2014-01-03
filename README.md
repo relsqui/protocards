@@ -50,7 +50,8 @@ Implements standard playing cards, with four suits, thirteen ranks, etc.
     ordered in `RANKS` and `SUITS`.
 
 * `StandardHand([Card, ...])`
-  * subclasses `base.Hand`.
+  * subclass of `base.Hand` whose members are required to be `StandardHand`s
+    (or subclasses thereof).
   * additional methods:
     * `.by_rank(Rank)` and `.by_suit(Suit)` return a new `StandardHand`
       composed of the cards in this one which have the rank or suit given.

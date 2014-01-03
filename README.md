@@ -7,13 +7,11 @@ Generalized card classes and game-specific libraries.
 Provides tools for building card, deck, and game types with.
 
 ##### classes
-* `EqualityMixin`
-  * implements `__eq__` and `__ne__`, comparing `__dict__` (and not type).
-
-* `CardProperty(short, name, plural = None)`
-  * initialize with two or three strings: an abbreviation, a full name, and, 
-    optionally, the plural of the name.
+* `CardProperty(name, plural = None, short = None)`
+  * initialize with a string name and, optionally, short and plural versions
+    of that name.
     * if no plural is provided, `name + "s"` will be used.
+    * if no short name is provided, `name[0]` will be used.
   * no exposed methods.
   * attributes are just `short`, `name`, and `plural`.
 

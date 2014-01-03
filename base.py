@@ -3,7 +3,7 @@
 import random, UserList
 
 
-class EqualityMixin(object):
+class EqualityMixin (object):
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
 
@@ -11,14 +11,17 @@ class EqualityMixin(object):
         return not self == other
 
 
-class CardProperty(EqualityMixin):
-    def __init__(self, short, name, plural = None):
-        self.short = short
+class CardProperty (EqualityMixin):
+    def __init__(self, name, plural = None, short = None):
         self.name = name
         if plural is None:
             self.plural = self.name + "s"
         else:
             self.plural = plural
+        if short is None:
+            self.short = self.name[0]
+        else:
+            self.short = short
 
     def __str__(self):
         return self.name

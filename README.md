@@ -8,15 +8,15 @@ Provides tools for building card, deck, and game types with.
 
 ##### classes
 * `CardProperty(name, plural=None, short=None)`
-  * initialize with a string name and, optionally, short and plural versions
+  * initialize with a string name and, optionally, plural and short versions
     of that name.
     * if no plural is provided, `name + "s"` will be used.
     * if no short name is provided, `name[0]` will be used.
   * no exposed methods.
   * properties are just `short`, `name`, and `plural`.
 
-* `Hand([Card, ...])`
-  * initialize, optionally, with a sequence of `Card`s (e.g. another `Hand`).
+* `Hand([...])`
+  * initialize, optionally, with a sequence (e.g. another `Hand`).
   * subclasses `UserList.UserList`, and therefore behaves like a `list` in
     terms of standard methods, adding and multiplying, and slicing.
     * slices return another `Hand`.
@@ -43,21 +43,21 @@ Implements standard playing cards, with four suits, thirteen ranks, etc.
   * initialize with a member of `RANKS` and a member of `SUITS`.
   * no exposed methods.
   * properties:
-    * `.rank` (its `Rank`) and `.suit` (its `Suit`).
+    * `.rank` and `.suit`.
     * `.short` = `.rank.short + .suit.short`, e.g. "Jh" for the Jack of
       Hearts.
     * `.name` is automatically generated as "Rank of Suit", so capitalized.
   * can be compared and sorted; will use `.rank` first, then `.suit`, as
     ordered in `RANKS` and `SUITS`.
 
-* `StandardHand([Card, ...])`
-  * subclass of `base.Hand` whose members are required to be `StandardHand`s
+* `StandardHand([StandardCard, ...])`
+  * subclass of `base.Hand` whose members are required to be `StandardCard`s
     (or subclasses thereof).
+  * adds a pretty string representation in which cards are grouped by suit and
+    sorted by rank (without altering the actual order).
   * additional methods:
     * `.by_rank(Rank)` and `.by_suit(Suit)` return a new `StandardHand`
       composed of the cards in this one which have the rank or suit given.
-  * adds a pretty string representation in which cards are grouped by suit and
-    sorted by rank (without altering the actual order).
 
 ##### functions
 * `make_deck(shuffle=False)`
@@ -69,7 +69,8 @@ Implements standard playing cards, with four suits, thirteen ranks, etc.
 ### cribbage.py
 
 ##### constants
-* `RANKS` is `standard.RANKS` but with `standard.ACE` at the beginning.
+* `RANKS` is `standard.RANKS` but with `standard.ACE` at the beginning instead
+  of the end.
 * `SUITS` is the same as `standard.SUITS`.
 
 ##### functions

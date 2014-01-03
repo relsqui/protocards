@@ -1,16 +1,28 @@
-#!/usr/bin/python
+"""Tools and definitions for a standard deck of 52 cards.
+
+In addition to the classes and functions listed, provides constants for
+the ranks TWO through ACE and suits CLUB through SPADE, along with a
+list of each: RANKS and SUITS.
+
+"""
 
 import functools
 import itertools
 
-import base
+from pydeck import base
 
 
 class Rank(base.CardProperty):
+
+    """Subclass of `pydeck.base.CardProperty` for symmetry with `Suit`."""
+
     pass
 
 
 class Suit(base.CardProperty):
+
+    """Subclass of `pydeck.base.CardProperty`. Lowercases its `.short`."""
+
     def __init__(self, *args, **kwargs):
         super(Suit, self).__init__(*args, **kwargs)
         self.short = self.short.lower()
@@ -42,6 +54,18 @@ SUITS = [CLUB, DIAMOND, HEART, SPADE]
 
 @functools.total_ordering
 class StandardCard(base.EqualityMixin):
+
+    """A regular playing card with a rank and a suit.
+
+    Initialize with members of `RANKS` and `SUITS`. Raises ValueError
+    if anything else is provided.
+
+    Attributes:
+        rank, suit - As provided.
+        name       - "Rank of Suits" in title case.
+        short      - rank.short + suit.short
+    """
+
     def __init__(self, rank, suit):
         if rank not in RANKS:
             raise ValueError("{} is not in RANKS".format(rank))
@@ -66,6 +90,11 @@ class StandardCard(base.EqualityMixin):
 
 
 class StandardHand(base.Hand):
+
+    """A hand of standard playing cards.
+
+    Raises TypeError if a non-`StandardCard` is passed in."""
+
     def __init__(self, *args, **kwargs):
         super(StandardHand, self).__init__(*args, **kwargs)
         for c in self:
@@ -86,13 +115,16 @@ class StandardHand(base.Hand):
                                 ",".join([c.short for c in self]))
 
     def by_suit(self, suit):
+        """Return all cards of `suit`, without removing them."""
         return self.__class__([c for c in self if c.suit == suit])
 
     def by_rank(self, rank):
+        """Return all cards of `rank`, without removing them."""
         return self.__class__([c for c in self if c.rank == rank])
 
 
-def make_deck(shuffle = False):
+def make_deck(shuffle=False):
+    """Return a `StandardHand` of all 52 cards; optionally, shuffle it."""
     deck = StandardHand([StandardCard(rank, suit)
                          for suit, rank in itertools.product(SUITS, RANKS)])
     if shuffle:

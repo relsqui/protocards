@@ -1,8 +1,8 @@
-#!/usr/bin/python
+"""Functions for scoring cribbage hands."""
 
 from operator import mul
 
-import standard
+from pydeck import standard
 
 
 RANKS = [standard.RANKS[-1]] + standard.RANKS[:-1]
@@ -10,10 +10,12 @@ SUITS = standard.SUITS
 
 
 def value(card):
+    """Calculate the point value of a single card; returns an int."""
     return min(RANKS.index(card.rank) + 1, 10)
 
 
 def score_pairs(hand):
+    """Calculate the points for pairs in a hand; returns an int."""
     pairs = 0
     for r in RANKS:
         same = float(len(hand.by_rank(r)))
@@ -22,6 +24,7 @@ def score_pairs(hand):
 
 
 def score_fifteens(hand):
+    """Calculate the points for fifteens in a hand; returns an int."""
     def count_subsums(target, numbers):
         subsums = 0
         if sum(numbers) == target:
@@ -40,6 +43,7 @@ def score_fifteens(hand):
 
 
 def score_runs(hand):
+    """Calculate the points for runs in a hand; returns an int."""
     rank_counts = []
     for r in RANKS:
         rank_counts.append(len(hand.by_rank(r)))
@@ -62,12 +66,34 @@ def score_runs(hand):
 
 
 def check_flush(hand):
+    """Check whether the hand has a flush; returns a boolean."""
     if len(hand) == len(hand.by_suit(hand[0].suit)):
         return True
     return False
 
 
 def score_hand(hand, turned=None, crib=False, dealer=False):
+    """Calculate the cribbage score of a hand.
+
+    Required Argument:
+    hand   - `pydeck.standard.StandardHand`; the hand to count.
+
+    Optional Arguments:
+    turned - `pydeck.standard.StandardCard`; the turned card. Will be
+             included in scoring if given, and can provide heels and
+             nobs points.
+    crib   - Boolean; whether to score this hand as a crib. Flushes in
+             crib hands only count if they include the turned card.
+             Defaults to `False` and ignored if no turned card given.
+    dealer - Boolean; whether to score this hand as the dealer's. Only
+             the dealer can earn points for heels. Defaults to `False`
+             and ignored if no turned card given.
+
+    Returns a dictionary whose keys are the types of score ("fifteens",
+    "pairs", "runs", "flush", "heels", and "nobs") and whose values are
+    the points earned of each type.
+
+    """
     score = {"fifteens": 0, "pairs": 0, "runs": 0, "flush": 0,
              "heels": 0, "nobs": 0}
     test_hand = standard.StandardHand(hand)

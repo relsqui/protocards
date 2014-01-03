@@ -1,142 +1,116 @@
 ## pydeck
 
-Generalized card classes and game-specific libraries.
-
-
-### base.py
-Provides tools for building card, deck, and game types with.
-
-##### classes
-* `CardProperty(name, plural=None, short=None)`
-  * initialize with a string name and, optionally, plural and short versions
-    of that name.
-    * if no plural is provided, `name + "s"` will be used.
-    * if no short name is provided, `name[0]` will be used.
-  * no exposed methods.
-  * properties are just `short`, `name`, and `plural`.
-
-* `Hand([...])`
-  * initialize, optionally, with a sequence (e.g. another `Hand`).
-  * subclasses `UserList.UserList`, and therefore behaves like a `list` in
-    terms of standard methods, adding and multiplying, and slicing.
-    * slices return another `Hand`.
-  * additional methods:
-    * `.shuffle()` is the opposite of `.sort()` (and also works in-place)
-    * `.deal(count)` pops off `count` items and returns them as a `Hand`.
-  * no exposed properties.
-
-
-### standard.py
-Implements standard playing cards, with four suits, thirteen ranks, etc.
-
-##### constants
-* `TWO` through `NINE`, `JACK`, `QUEEN`, `KING`, and `ACE` are `Rank`s.
-* `CLUB`, `DIAMOND`, `HEART`, and `SPADE` are `Suit`s.
-* `RANKS` is a list of `TWO` through `ACE`, in that order.
-* `SUITS` is a list of `CLUB`, `DIAMOND`, `HEART`, and `SPADE`, in that order.
-
-##### classes
-* `Rank` and `Suit` subclass `base.CardProperty`, mostly for naming clarity.
-  * `Suit` lowercases its `.short`.
-
-* `StandardCard(Rank, Suit)`
-  * initialize with a member of `RANKS` and a member of `SUITS`.
-  * no exposed methods.
-  * properties:
-    * `.rank` and `.suit`.
-    * `.short` = `.rank.short + .suit.short`, e.g. "Jh" for the Jack of
-      Hearts.
-    * `.name` is automatically generated as "Rank of Suit", so capitalized.
-  * can be compared and sorted; will use `.rank` first, then `.suit`, as
-    ordered in `RANKS` and `SUITS`.
-
-* `StandardHand([StandardCard, ...])`
-  * subclass of `base.Hand` whose members are required to be `StandardCard`s
-    (or subclasses thereof).
-  * adds a pretty string representation in which cards are grouped by suit and
-    sorted by rank (without altering the actual order).
-  * additional methods:
-    * `.by_rank(Rank)` and `.by_suit(Suit)` return a new `StandardHand`
-      composed of the cards in this one which have the rank or suit given.
-
-##### functions
-* `make_deck(shuffle=False)`
-   * returns a `StandardHand` populated with one of every unique pair of rank
-     and suit.
-   * call with `shuffle=True` to shuffle the deck before returning it.
-
-
-### cribbage.py
-
-##### constants
-* `RANKS` is `standard.RANKS` but with `standard.ACE` at the beginning instead
-  of the end.
-* `SUITS` is the same as `standard.SUITS`.
-
-##### functions
-* `score_hand(standard.StandardHand, turned=None, crib=False, dealer=False)`
-  * returns a dictionary whose keys are "fifteens", "pairs", "runs", "flush",
-    "heels", and "nobs", and whose values are the points earned by that hand
-    for each type of score.
-    * `sum(score_hand(...).values())` gives total score.
-  * the turned card, if provided, adds some additional scoring potential:
-    * it's included in the hand for counting fifteens, pairs, and runs.
-    * nobs may be scored, based on its suit.
-    * with `dealer=True`, heels may be scored, based on its suit.
-    * with `crib=True`, it must be included in a flush for the flush to count.
-
-* `score_fifteens(standard.StandardHand)`,
-  `score_pairs(standard.StandardHand)`,
-  `score_runs(standard.StandardHand)`
-  * each returns a partial score, looking at only one aspect of the hand.
-
-* `check_flush(standard.StandardHand)`
-  * returns `True` if all cards in the hand have the same `.suit`, `False`
-    otherwise.
-
-* `value(standard.StandardCard)`
-  * returns the point value of the card: 1 for an ace, 10 for an honor, and
-    face value for anything else.
-
-
-### example
+is a library for writing card games in python. Basic usage is simple:
 
 ```
->>> import standard
->>> deck = standard.make_deck(shuffle=True)
->>> hand = deck.deal(4)
+>>> from pydeck.standard import make_deck
+>>>
+>>> deck = make_deck(shuffle=True)
+>>> hand = deck.deal(5)
 >>> print hand
-9d 84h Js
->>> turned = deck.pop()
->>> print turned
-Nine of Spades
->>> 
->>> import cribbage
->>> cribbage.score_hand(hand, turned=turned)
-{'nobs': 1, 'pairs': 2}
+AJ6s 2h 3c
+>>> print hand[0]
+Ace of Spades
 ```
+
+The cribbage module implements some example game logic using pydeck.
+
+```
+>>> from pydeck.standard import make_deck
+>>> from pydeck.cribbage import score_hand
+>>>
+>>> deck = make_deck(shuffle=True)
+>>> hand = deck.deal(4)
+>>> turned = deck.pop()
+>>> print hand
+Jh 8d QTc
+>>> print turned
+Six of Spades
+>>> score_hand(hand, turned)
+{'runs': 3, 'fifteens': 0, 'pairs': 0, 'nobs': 0, 'flush': 0, 'heels': 0}
+```
+
+### package summary
+
+#### base
+base is for abstract classes which can be used on their own in
+simple projects or subclassed to build more complex mechanics.
+
+A `CardProperty` is a category a card can belong to, like "spade"
+or "three" or "green" or "flying." This base class only has a name;
+subclass it to add other attributes, or just to have a new type
+for easy comparison.
+
+`Hand` is a container for storing cards. It behaves like a list in
+that it can be indexed or sliced, and implements the standard list
+methods as well as these:
+* `.shuffle()` is the opposite of `.sort()`.
+* `.deal(n)` removes the number of cards you specify and returns them
+  as a new `Hand`.
+
+
+#### standard
+standard implements the standard 52-card deck. It defines `Rank`
+and `Suit` as card properties, and a list of each: `RANKS` and
+`SUITS`. These lists define the sorting order for cards with those
+properties. Specific ranks and suits can also be accessed as
+constants--`TWO`, `QUEEN`, `HEART`, and so on.
+
+`StandardCard` is your normal playing card. It has a rank, a suit, and
+a name. You can compare StandardCards to each other; cards with lower
+ranks are less than cards with higher ranks, and a card with a lower
+suit is less than a card with a higher suit and the same rank. (Aces
+are high by default. If you don't know what order the suits go in, go
+find someone who plays bridge and ask them.)
+
+`StandardHand` is what you hold StandardCards in. To Hand it adds a
+tidy string representation (as seen in the examples), and two more
+methods:
+ * `.by_rank(Rank)` returns a new StandardHand containing the cards
+   from your hand which have the given rank. It does *not* remove them
+   from your hand.
+ * `.by_suit(Suit)` is the same thing but for suits.
+
+Finally, `make_deck()` is a top-level function which just creates a full
+deck of cards, defined as one of each possible pair of the members of
+RANKS and SUITS. By default, it is returned still in order; pass
+`shuffle=True` to have it shuffled first.
+
+
+#### cribbage
+cribbage implements the hand-scoring rules of cribbage (but not the
+play rules). Its main interface is `score_hand()`, which takes a
+StandardHand and returns a dictionary of ("score-type": points) pairs.
+You can also pass it `turned=StandardCard` and the boolean arguments
+`crib` and `dealer` to cover all the scoring possibilities.
+
+score_hand() has a series of helper functions which can be called
+individually with a StandardHand: `score_fifteens()` etc. return
+integers, and `check_flush()` returns a boolean. It also has the
+`value()` function, which takes a StandardCard and returns the point
+value of that card (for fifteens and the play).
+
 
 ___
-I originally wrote this because I wanted to know what the cribbage score for a
-whole deck of cards was. Here's the answer, if you're curious:
+
+I originally wrote this because I wanted to know what the cribbage
+score for a whole deck of cards was. Now I can find out!
 
 ```
-relsqui@barrett:~/cribbage-scorer$ cat score_the_deck.py 
-#!/usr/bin/python
-
-import cards, cribbage
-
-score = cribbage.score_hand(standard.make_deck())
-for k, v in score.items():
-    print k, "for", v
-print "total:", sum(score.values())
-
-
-relsqui@barrett:~/cribbage-scorer$ ./score_the_deck.py 
-fifteens for 34528
-runs for 872415232
+>>> from pydeck import standard, cribbage
+>>>
+>>> def score_deck():
+...     score = cribbage.score_hand(standard.make_deck())
+...     for key, value in score.items():
+...             if value:
+...                 print "{} for {:,}".format(key, value)
+...     print "total: {:,}".format(sum(score.values()))
+... 
+>>> score_deck()
+runs for 872,415,232
+fifteens for 34,528
 pairs for 156
-total: 872449916
+total: 872,449,916
 ```
 
 Plus 1-2 for heels/nobs, depending on the turned card and whether you're

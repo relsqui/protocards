@@ -30,12 +30,15 @@ Provides tools for building card, deck, and game types with.
 Implements standard playing cards, with four suits, thirteen ranks, etc.
 
 ##### constants
-* `TWO` through `NINE`, `JACK`, `QUEEN`, `KING`, `ACE`, `CLUB`, `DIAMOND`,
-  `HEART`, and `SPADE` are instances of `CardProperty`.
+* `TWO` through `NINE`, `JACK`, `QUEEN`, `KING`, and `ACE` are `Rank`s.
+* `CLUB`, `DIAMOND`, `HEART`, and `SPADE` are `Suit`s.
 * `RANKS` is a list of `TWO` through `ACE`, in that order.
 * `SUITS` is a list of `CLUB`, `DIAMOND`, `HEART`, and `SPADE`, in that order.
 
 ##### classes
+* `Rank` and `Suit` subclass `CardProperty`, mostly for naming clarity.
+  * `Suit` lowercases its `.short`.
+
 * `StandardCard(rank, suit)`
   * initialize with a `CardProperty` from `RANKS` and another one from `SUITS`,
     e.g. `Card(JACK, HEART)` to make a Jack of Hearts.

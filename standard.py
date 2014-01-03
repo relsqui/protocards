@@ -5,24 +5,32 @@ import functools, itertools
 import base
 
 
-TWO = base.CardProperty("2", "Two")
-THREE = base.CardProperty("3", "Three")
-FOUR = base.CardProperty("4", "Four")
-FIVE = base.CardProperty("5", "Five")
-SIX = base.CardProperty("6", "Six", "Sixes")
-SEVEN = base.CardProperty("7", "Seven")
-EIGHT = base.CardProperty("8", "Eight")
-NINE = base.CardProperty("9", "Nine")
-TEN = base.CardProperty("T", "Ten")
-JACK = base.CardProperty("J", "Jack")
-QUEEN = base.CardProperty("Q", "Queen")
-KING = base.CardProperty("K", "King")
-ACE = base.CardProperty("A", "Ace")
+class Rank (base.CardProperty):
+    pass
 
-CLUB = base.CardProperty("c", "Club")
-DIAMOND = base.CardProperty("d", "Diamond")
-HEART = base.CardProperty("h", "Heart")
-SPADE = base.CardProperty("s", "Spade")
+class Suit (base.CardProperty):
+    def __init__(self, *args, **kwargs):
+        super(Suit, self).__init__(*args, **kwargs)
+        self.short = self.short.lower()
+
+TWO = Rank("Two", short="2")
+THREE = Rank("Three", short="3")
+FOUR = Rank("Four", short="4")
+FIVE = Rank("Five", short="5")
+SIX = Rank("Six", plural="Sixes", short="6")
+SEVEN = Rank("Seven", short="7")
+EIGHT = Rank("Eight", short="8")
+NINE = Rank("Nine", short="9")
+TEN = Rank("Ten")
+JACK = Rank("Jack")
+QUEEN = Rank("Queen")
+KING = Rank("King")
+ACE = Rank("Ace")
+
+CLUB = Suit("Club")
+DIAMOND = Suit("Diamond")
+HEART = Suit("Heart")
+SPADE = Suit("Spade")
 
 RANKS = [TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE]
 SUITS = [CLUB, DIAMOND, HEART, SPADE]

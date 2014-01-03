@@ -27,12 +27,12 @@ class CardProperty (EqualityMixin):
         return self.name
 
     def __repr__(self):
-        return "<CardProperty:{}>".format(self.name)
+        return "<{}:{}>".format(self.__class__.__name__, self.short)
 
 
 class Hand (UserList.UserList):
     def __repr__(self):
-        return "<Hand({}):{}>".format(len(self), ",".join(map(str, self)))
+        return "<{}({}):{}>".format(self.__class__.__name__, len(self), ",".join(map(str, self)))
 
     def shuffle(self):
         random.shuffle(self)

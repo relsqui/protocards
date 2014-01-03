@@ -48,7 +48,7 @@ class StandardCard (base.EqualityMixin):
         return self.name
 
     def __repr__(self):
-        return '<StandardCard:{}>'.format(self.short)
+        return '<{}:{}>'.format(self.__class__.__name__, self.short)
 
     def __lt__(self, other):
         if self.rank == other.rank:
@@ -67,13 +67,13 @@ class StandardHand (base.Hand):
         return " ".join(suit_strings)
 
     def __repr__(self):
-        return "<StandardHand:{}>".format(",".join([c.short for c in self]))
+        return "<{}:{}>".format(self.__class__.__name__, ",".join([c.short for c in self]))
 
     def by_suit(self, suit):
-        return StandardHand([c for c in self if c.suit == suit])
+        return self.__class__([c for c in self if c.suit == suit])
 
     def by_rank(self, rank):
-        return StandardHand([c for c in self if c.rank == rank])
+        return self.__class__([c for c in self if c.rank == rank])
 
 
 def make_deck(shuffle = False):

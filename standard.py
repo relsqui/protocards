@@ -39,6 +39,10 @@ SUITS = [CLUB, DIAMOND, HEART, SPADE]
 @functools.total_ordering
 class StandardCard (base.EqualityMixin):
     def __init__(self, rank, suit):
+        if rank not in RANKS:
+            raise ValueError("{} is not in RANKS".format(rank))
+        if suit not in SUITS:
+            raise ValueError("{} is not in SUITS".format(suit))
         self.rank = rank
         self.suit = suit
         self.short = self.rank.short + self.suit.short

@@ -64,7 +64,7 @@ class StandardCard (base.EqualityMixin):
 class StandardHand (base.Hand):
     def __str__(self):
         suit_strings = []
-        for s in SUITS:
+        for s in reversed(SUITS):
             cards = sorted(self.by_suit(s), reverse=True)
             if cards:
                 suit_strings.append("".join([c.rank.short for c in cards]) + s.short)

@@ -57,6 +57,13 @@ class CardProperty(EqualityMixin):
         return "<{}:{}>".format(self.__class__.__name__, self.short)
 
 
+class Card(EqualityMixin):
+
+    """Placeholder to provide equality tests to subclasses."""
+
+    pass
+
+
 class Hand(UserList.UserList):
 
     """List-like class for storing and dealing cards.

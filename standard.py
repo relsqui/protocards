@@ -53,7 +53,7 @@ SUITS = [CLUB, DIAMOND, HEART, SPADE]
 
 
 @functools.total_ordering
-class StandardCard(base.EqualityMixin):
+class StandardCard(base.Card):
 
     """A regular playing card with a rank and a suit.
 

@@ -41,6 +41,9 @@ or "three" or "green" or "flying." This base class only has a name;
 subclass it to add other attributes, or just to have a new type
 for easy comparison.
 
+`Card` is a placeholder, which provides a basic equality test to
+its subclasses.
+
 `Hand` is a container for storing cards. It behaves like a list in
 that it can be indexed or sliced, and implements the standard list
 methods as well as these:

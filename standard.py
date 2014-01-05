@@ -67,10 +67,6 @@ class StandardCard(base.EqualityMixin):
     """
 
     def __init__(self, rank, suit):
-        if rank not in RANKS:
-            raise ValueError("{} is not in RANKS".format(rank))
-        if suit not in SUITS:
-            raise ValueError("{} is not in SUITS".format(suit))
         self.rank = rank
         self.suit = suit
         self.short = self.rank.short + self.suit.short
@@ -94,12 +90,6 @@ class StandardHand(base.Hand):
     """A hand of standard playing cards.
 
     Raises TypeError if a non-`StandardCard` is passed in."""
-
-    def __init__(self, *args, **kwargs):
-        super(StandardHand, self).__init__(*args, **kwargs)
-        for c in self:
-            if not isinstance(c, StandardCard):
-                raise TypeError("{} is not a StandardCard".format(c))
 
     def __str__(self):
         suit_strings = []

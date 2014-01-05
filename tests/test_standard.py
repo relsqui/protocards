@@ -23,11 +23,6 @@ class TestStandard(unittest.TestCase):
             self.assertEqual(card.short, "As")
             self.assertEqual(card.name, "Ace of Spades")
 
-    def test_card_init_wrongtype(self):
-        wrong_type = [(standard.SPADE, standard.ACE), ("foo", "bar"), (1, 2)]
-        for args in wrong_type:
-            self.assertRaises(ValueError, standard.StandardCard, *args)
-
     def test_card_equality(self):
         card_a = standard.StandardCard(standard.ACE, standard.SPADE)
         card_b = standard.StandardCard(standard.ACE, standard.SPADE)
@@ -45,9 +40,6 @@ class TestStandard(unittest.TestCase):
         self.assertTrue(cards["Ah"] > cards["2h"])
         self.assertTrue(cards["Ah"] >= cards["2h"])
         self.assertNotEqual(cards["Ah"], cards["2h"])
-
-    def test_hand_bad_type(self):
-        self.assertRaises(TypeError, standard.StandardHand, [5])
 
     def test_hand_str(self):
         deck = standard.make_deck()

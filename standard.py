@@ -115,16 +115,7 @@ class StandardCard(base.Card):
 
 class StandardHand(base.Hand):
 
-    """A hand of standard playing cards.
-
-    StandardHands can be compared naively. One StandardHand is greater
-    than another if it is longer; or, if they are the same length, its
-    highest-ranked card has greater rank; or, if their highest cards
-    have the same rank, if its second-highest-ranked card has greater
-    rank, and so on. Note that, unlike for StandardCards, suit is not
-    taken into account.
-
-    """
+    """A hand of standard playing cards."""
 
     def __str__(self):
         suit_strings = []
@@ -139,30 +130,6 @@ class StandardHand(base.Hand):
         return "<{}:{}>".format(self.__class__.__name__,
                                 ",".join([c.short for c in self]))
 
-    def __eq__(self, other):
-        return (sorted([c.rank for c in self]) ==
-                sorted([c.rank for c in other]))
-
-    def __ne__(self, other):
-        return not self == other
-
-    def __lt__(self, other):
-        if len(self) != len(other):
-            return len(self) < len(other)
-        for i in range(len(self)):
-            if self[i].rank != other[i].rank:
-                return self[i].rank < other[i].rank
-        return False
-
-    def __gt__(self, other):
-        return not (self < other or self == other)
-
-    def __le__(self, other):
-        return self < other or self == other
-
-    def __ge__(self, other):
-        return self > other or self == other
-
     def by_suit(self, suit):
         """Return all cards of `suit`, without removing them."""
         return self.__class__([c for c in self if c.suit == suit])
@@ -170,6 +137,31 @@ class StandardHand(base.Hand):
     def by_rank(self, rank):
         """Return all cards of `rank`, without removing them."""
         return self.__class__([c for c in self if c.rank == rank])
+
+
+@functools.total_ordering
+class LongerStronger(object):
+
+    """Comparator class, to use as a key when sorting hands."""
+
+    def __init__(self, obj, *args):
+        self.obj = obj
+
+    def __eq__(self, other):
+        self = self.obj
+        other = other.obj
+        return (sorted([c.rank for c in self]) ==
+                sorted([c.rank for c in other]))
+
+    def __lt__(self, other):
+        self = self.obj
+        other = other.obj
+        if len(self) != len(other):
+            return len(self) < len(other)
+        for i in range(len(self)):
+            if self[i].rank != other[i].rank:
+                return self[i].rank < other[i].rank
+        return False
 
 
 def make_deck(shuffle=False):
@@ -209,13 +201,14 @@ def best_flush(hand):
     if not len(hand):
         return StandardHand()
 
-    def flush_suit(hand):
-        return hand[0].suit
+    def card_ranks(hand):
+        return sorted([c.rank for c in hand])
 
     all_flushes = [hand.by_suit(s) for s in SUITS]
-    best_by_rank = max(all_flushes)
-    all_best = [f for f in all_flushes if f == best_by_rank]
-    best = max(all_best, key=flush_suit)
+    best_by_rank = max(all_flushes, key=LongerStronger)
+    all_best = [f for f in all_flushes if card_ranks(f) ==
+                                          card_ranks(best_by_rank)]
+    best = max(all_best, key=lambda f: f[0].suit)
     return best
 
 

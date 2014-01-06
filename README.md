@@ -41,7 +41,7 @@ or "three" or "green" or "flying." This base class only has a name;
 subclass it to add other attributes, or just to have a new type
 for easy comparison.
 
-`Card` is a placeholder, which provides a basic equality test to
+`Card` is a placeholder which provides a basic equality test to
 its subclasses.
 
 `Hand` is a container for storing cards. It behaves like a list in
@@ -74,10 +74,15 @@ methods:
    from your hand.
  * `.by_suit(Suit)` is the same thing but for suits.
 
-Finally, `make_deck()` is a top-level function which just creates a full
-deck of cards, defined as one of each possible pair of the members of
-RANKS and SUITS. By default, it is returned still in order; pass
-`shuffle=True` to have it shuffled first.
+Finally, standard has some top-level helper functions:
+* `make_deck()` creates a full deck of cards, defined as one of each
+  possible pair of the members of RANKS and SUITS. By default, it is
+  returned still in order; pass `shuffle=True` to have it shuffled
+  first.
+* `find_pairs(StandardHand)` returns a list of tuples of all the pairs
+  in a hand.
+* `best_flush(StandardHand)` returns the longest highest flush which can
+  be made from cards in a hand.
 
 
 #### cribbage

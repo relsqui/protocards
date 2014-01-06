@@ -12,20 +12,45 @@ import itertools
 from pydeck import base
 
 
+@functools.total_ordering
 class Rank(base.CardProperty):
 
-    """Subclass of `pydeck.base.CardProperty` for symmetry with `Suit`."""
+    """A card's rank.
 
-    pass
+    Ranks can be sorted; the key is their index in RANKS, which can be
+    retrieved from the `.order` property.
+
+    """
+
+    def __le__(self, other):
+        return self.order < other.order
+
+    @property
+    def order(self):
+        return RANKS.index(self)
 
 
+@functools.total_ordering
 class Suit(base.CardProperty):
 
-    """Subclass of `pydeck.base.CardProperty`. Lowercases its `.short`."""
+    """A card's suit.
+
+    Differs from base.CardProperty by having a lowercase default
+    `.short`. Suits can be sorted; the key is their index in SUITS,
+    which can be retrieved from the `.order` property.
+
+    """
 
     def __init__(self, *args, **kwargs):
         super(Suit, self).__init__(*args, **kwargs)
         self.short = self.short.lower()
+
+    def __le__(self, other):
+        return self.order < other.order
+
+    @property
+    def order(self):
+        return SUITS.index(self)
 
 
 TWO = Rank("Two", short="2")
@@ -57,8 +82,9 @@ class StandardCard(base.Card):
 
     """A regular playing card with a rank and a suit.
 
-    Initialize with members of `RANKS` and `SUITS`. Raises ValueError
-    if anything else is provided.
+    Initialize with one member each of RANKS and SUITS. Cards can
+    be sorted; they'll be ordered by rank first, then suit, according
+    to the order in RANKS and SUITS.
 
     Attributes:
         rank, suit - As provided.
@@ -81,16 +107,20 @@ class StandardCard(base.Card):
 
     def __lt__(self, other):
         if self.rank == other.rank:
-            return SUITS.index(self.suit) < SUITS.index(other.suit)
-        else:
-            return RANKS.index(self.rank) < RANKS.index(other.rank)
+            return self.suit < other.suit
+        return self.rank < other.rank
 
 
 class StandardHand(base.Hand):
 
     """A hand of standard playing cards.
 
-    Raises TypeError if a non-`StandardCard` is passed in.
+    StandardHands can be compared naively. One StandardHand is greater
+    than another if it is longer; or, if they are the same length, its
+    highest-ranked card has greater rank; or, if their highest cards
+    have the same rank, if its second-highest-ranked card has greater
+    rank, and so on. Note that, unlike for StandardCards, suit is not
+    taken into account.
 
     """
 
@@ -107,6 +137,29 @@ class StandardHand(base.Hand):
         return "<{}:{}>".format(self.__class__.__name__,
                                 ",".join([c.short for c in self]))
 
+    def __eq__(self, other):
+        return sorted([c.rank for c in self]) == sorted([c.rank for c in other])
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __lt__(self, other):
+        if len(self) != len(other):
+            return len(self) < len(other)
+        for i in range(len(self)):
+            if self[i].rank != other[i].rank:
+                return self[i].rank < other[i].rank
+        return False
+
+    def __gt__(self, other):
+        return not (self < other or self == other)
+
+    def __le__(self, other):
+        return self < other or self == other
+
+    def __ge__(self, other):
+        return self > other or self == other
+
     def by_suit(self, suit):
         """Return all cards of `suit`, without removing them."""
         return self.__class__([c for c in self if c.suit == suit])
@@ -117,7 +170,7 @@ class StandardHand(base.Hand):
 
 
 def make_deck(shuffle=False):
-    """Return a `StandardHand` of all 52 cards; optionally, shuffle it."""
+    """Return a StandardHand of all 52 cards; optionally, shuffle it."""
     deck = StandardHand([StandardCard(rank, suit)
                          for suit, rank in itertools.product(SUITS, RANKS)])
     if shuffle:

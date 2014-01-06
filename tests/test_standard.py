@@ -56,6 +56,27 @@ class TestStandard(unittest.TestCase):
     def test_hand_by_rank(self):
         self.assertEqual(str(self.aces), "As Ah Ad Ac")
 
+    def test_hand_equality(self):
+        self.assertEqual(self.deck, std.make_deck(shuffle=True))
+        self.assertEqual(self.spades, self.deck.by_suit(std.CLUB))
+        self.assertNotEqual(self.deck, self.spades)
+        self.assertNotEqual(self.spades, self.aces)
+        self.assertEqual(self.aces[:2], self.aces[-2:])
+        self.assertFalse(self.aces[:2] != self.aces[-2:])
+
+    def test_hand_inequality(self):
+        self.assertTrue(self.deck > self.spades)
+        self.assertTrue(self.deck >= self.spades)
+        self.assertTrue(self.deck >= std.make_deck(shuffle=True))
+        self.assertTrue(self.spades > self.aces)
+        twos = self.deck.by_rank(std.TWO)
+        self.assertTrue(self.aces > twos)
+        self.assertTrue(twos <= self.aces)
+        self.assertTrue(twos[:2] <= twos[-2:])
+        low = self.spades[:5]
+        high = self.spades[-5:]
+        self.assertTrue(low < high)
+
     def test_make_deck(self):
         hand = std.StandardHand()
         for suit in std.SUITS:
@@ -67,7 +88,7 @@ class TestStandard(unittest.TestCase):
         random.seed(0)
         unshuffled = std.make_deck(shuffle=False)
         shuffled = std.make_deck(shuffle=True)
-        self.assertNotEqual(unshuffled, shuffled)
+        self.assertNotEqual(list(unshuffled), list(shuffled))
 
     def test_pairs(self):
         self.assertEqual(len(std.find_pairs(self.deck)), 78)

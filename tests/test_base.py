@@ -67,3 +67,7 @@ class TestEqualityMixin(unittest.TestCase):
         a.name = "apple"
         b.name = "banana"
         self.assertNotEqual(a, b)
+
+    def test_no_dict(self):
+        a = self.Foo
+        self.assertNotEqual(a, 5)

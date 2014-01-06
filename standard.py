@@ -125,6 +125,40 @@ def make_deck(shuffle=False):
     return deck
 
 
+def find_pairs(hand):
+    """Find all pairs (two cards with the same rank) in a hand.
+
+    Returns a list of tuples of cards.
+
+    """
+    pairs = []
+    for rank in RANKS:
+        pairs.extend(itertools.combinations(hand.by_rank(rank), 2))
+    return pairs
+
+
+def find_flushes(hand):
+    """Find the longest flush(es) in a hand.
+
+    Returns a list of tuples of cards with the same suit. If there is a
+    single longest flush in the hand, the list will contain only one
+    tuple. If two or more flushes are tied for longest, they will all
+    be returned (and any others will be ignored). If an empty hand is
+    passed, an empty list will be returned.
+
+    """
+    if not len(hand):
+        return []
+    flushes = [[]]
+    for suit in SUITS:
+        by_suit = tuple(hand.by_suit(suit))
+        if len(by_suit) > len(flushes[0]):
+            flushes = [by_suit]
+        elif len(by_suit) == len(flushes[0]):
+            flushes.append(by_suit)
+    return flushes
+
+
 if __name__ == "__main__":
     deck = make_deck(shuffle=True)
     print deck.deal(13)

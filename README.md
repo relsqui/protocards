@@ -70,15 +70,9 @@ methods:
    from your hand.
  * `.by_suit(Suit)` is the same thing but for suits.
 
-Finally, standard has some top-level helper functions:
-* `make_deck()` creates a full deck of cards, defined as one of each
-  possible pair of the members of RANKS and SUITS. By default, it is
-  returned still in order; pass `shuffle=True` to have it shuffled
-  first.
-* `find_pairs(StandardHand)` returns a list of tuples of all the pairs
-  in a hand.
-* `best_flush(StandardHand)` returns the longest highest flush which can
-  be made from cards in a hand.
+Finally, `make_deck()` creates a full deck of cards, defined as one of
+each possible pair of the members of RANKS and SUITS. By default, it is
+returned still in order; pass `shuffle=True` to have it shuffled first.
 
 
 #### cribbage
@@ -94,6 +88,13 @@ integers, and `check_flush()` returns a boolean. It also has the
 `value()` function, which takes a StandardCard and returns the point
 value of that card (for fifteens and the play).
 
+#### poker
+poker implements some hand-analyzing tools for poker games.
+
+* `find_pairs(StandardHand)` returns a list of tuples of all the pairs
+  in a hand.
+* `best_flush(StandardHand)` returns the longest highest flush which can
+  be made from cards in a hand.
 
 ___
 

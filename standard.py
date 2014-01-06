@@ -79,7 +79,6 @@ RANKS = [TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT,
 SUITS = [CLUB, DIAMOND, HEART, SPADE]
 
 
-@functools.total_ordering
 class StandardCard(base.Card):
 
     """A regular playing card with a rank and a suit.
@@ -106,11 +105,6 @@ class StandardCard(base.Card):
 
     def __repr__(self):
         return '<{}:{}>'.format(self.__class__.__name__, self.short)
-
-    def __lt__(self, other):
-        if self.rank == other.rank:
-            return self.suit < other.suit
-        return self.rank < other.rank
 
 
 class StandardHand(base.Hand):

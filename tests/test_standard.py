@@ -26,24 +26,6 @@ class TestStandard(unittest.TestCase):
             self.assertEqual(card.short, "As")
             self.assertEqual(card.name, "Ace of Spades")
 
-    def test_card_equality(self):
-        card_a = std.StandardCard(std.ACE, std.SPADE)
-        card_b = std.StandardCard(std.ACE, std.SPADE)
-        self.assertEqual(card_a, card_b)
-
-    def test_card_inequality(self):
-        cards = {
-            "As": std.StandardCard(std.ACE, std.SPADE),
-            "Ah": std.StandardCard(std.ACE, std.HEART),
-            "2h": std.StandardCard(std.TWO, std.HEART)
-        }
-        self.assertTrue(cards["Ah"] < cards["As"])
-        self.assertTrue(cards["Ah"] <= cards["As"])
-        self.assertNotEqual(cards["Ah"], cards["As"])
-        self.assertTrue(cards["Ah"] > cards["2h"])
-        self.assertTrue(cards["Ah"] >= cards["2h"])
-        self.assertNotEqual(cards["Ah"], cards["2h"])
-
     def test_hand_str(self):
         self.assertEqual(str(self.deck),
                          "AKQJT98765432s AKQJT98765432h "

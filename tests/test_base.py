@@ -10,6 +10,13 @@ class TestBase(unittest.TestCase):
         self.assertEqual(prop.name, "bar")
         self.assertEqual(prop.plural, "bars")
         self.assertEqual(prop.short, "b")
+        self.assertEqual(str(prop), "bar")
+        self.assertEqual(repr(prop), "<CardProperty:b>")
+
+    def test_hand(self):
+        hand = base.Hand([1, 2, 3, 4, 5])
+        self.assertEqual(repr(hand), "<Hand(5):1,2,3,4,5>")
+        self.assertEqual(repr(hand), str(hand))
 
     def test_shuffle(self):
         data = [1, 2, 3, 4, 5]

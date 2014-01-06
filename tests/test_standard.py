@@ -25,10 +25,25 @@ class TestStandard(unittest.TestCase):
             self.assertEqual(card.suit, std.SPADE)
             self.assertEqual(card.short, "As")
             self.assertEqual(card.name, "Ace of Spades")
+            self.assertEqual(str(card), "Ace of Spades")
+            self.assertEqual(repr(card), "<StandardCard:As>")
+
+    def test_card_equality(self):
+        ace1 = std.StandardCard(std.ACE, std.SPADE)
+        ace2 = std.StandardCard(std.ACE, std.SPADE)
+        two = std.StandardCard(std.TWO, std.SPADE)
+        self.assertTrue(ace1 == ace2)
+        self.assertFalse(ace1 != ace2)
+        self.assertTrue(ace1 != two)
+        self.assertFalse(ace1 == two)
 
     def test_hand_str(self):
         self.assertEqual(str(self.deck), "AKQJT98765432s AKQJT98765432h "
                                          "AKQJT98765432d AKQJT98765432c")
+        ace = std.StandardCard(std.ACE, std.SPADE)
+        two = std.StandardCard(std.TWO, std.SPADE)
+        hand = std.StandardHand([ace, two])
+        self.assertEqual(repr(hand), "<StandardHand:As,2s>")
 
     def test_hand_by_suit(self):
         spades = std.make_deck().by_suit(std.SPADE)

@@ -27,6 +27,7 @@ class Rank(base.CardProperty):
 
     @property
     def order(self):
+        """Return the Rank's index in RANKS."""
         return RANKS.index(self)
 
 
@@ -50,6 +51,7 @@ class Suit(base.CardProperty):
 
     @property
     def order(self):
+        """Return the Suit's index in SUITS."""
         return SUITS.index(self)
 
 
@@ -138,7 +140,8 @@ class StandardHand(base.Hand):
                                 ",".join([c.short for c in self]))
 
     def __eq__(self, other):
-        return sorted([c.rank for c in self]) == sorted([c.rank for c in other])
+        return (sorted([c.rank for c in self]) ==
+                sorted([c.rank for c in other]))
 
     def __ne__(self, other):
         return not self == other
@@ -190,26 +193,30 @@ def find_pairs(hand):
     return pairs
 
 
-def find_flushes(hand):
-    """Find the longest flush(es) in a hand.
+def best_flush(hand):
+    """Find the best flush in a hand.
 
-    Returns a list of tuples of cards with the same suit. If there is a
-    single longest flush in the hand, the list will contain only one
-    tuple. If two or more flushes are tied for longest, they will all
-    be returned (and any others will be ignored). If an empty hand is
-    passed, an empty list will be returned.
+    Returns a StandardHand of the highest flush in the hand provided.
+    If one of the flushes is longest, that one is returned; else, the
+    one with the highest-ranked highest card is returned, or the
+    highest-ranked second-highest card if the first are equal, and so
+    on. If the longest flushes share all their card ranks, the one with
+    the highest suit is returned.
+
+    If the given hand is empty, the returned hand is also empty.
 
     """
     if not len(hand):
-        return []
-    flushes = [[]]
-    for suit in SUITS:
-        by_suit = tuple(hand.by_suit(suit))
-        if len(by_suit) > len(flushes[0]):
-            flushes = [by_suit]
-        elif len(by_suit) == len(flushes[0]):
-            flushes.append(by_suit)
-    return flushes
+        return StandardHand()
+
+    def flush_suit(hand):
+        return hand[0].suit
+
+    all_flushes = [hand.by_suit(s) for s in SUITS]
+    best_by_rank = max(all_flushes)
+    all_best = [f for f in all_flushes if f == best_by_rank]
+    best = max(all_best, key=flush_suit)
+    return best
 
 
 if __name__ == "__main__":

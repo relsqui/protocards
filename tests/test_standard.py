@@ -98,10 +98,13 @@ class TestStandard(unittest.TestCase):
         self.assertEqual(len(std.find_pairs(std.StandardHand())), 0)
 
     def test_flushes(self):
-        by_suits = [tuple(self.deck.by_suit(s)) for s in std.SUITS]
-        ace_lists = [(a,) for a in self.aces]
-        self.assertEqual(std.find_flushes(self.deck), by_suits)
-        self.assertEqual(std.find_flushes(self.spades), [tuple(self.spades)])
-        self.assertEqual(std.find_flushes(self.mixed), [tuple(self.spades)])
-        self.assertEqual(std.find_flushes(self.aces), ace_lists)
-        self.assertEqual(std.find_flushes(std.StandardHand()), [])
+        ace_spades = std.StandardHand([std.StandardCard(std.ACE, std.SPADE)])
+        empty_hand = std.StandardHand()
+        self.assertEqual(std.best_flush(self.deck), self.spades)
+        self.assertEqual(std.best_flush(self.spades), self.spades)
+        self.assertEqual(std.best_flush(self.mixed), self.spades)
+        self.assertEqual(std.best_flush(self.aces), ace_spades)
+        self.assertEqual(std.best_flush(empty_hand), empty_hand)
+        low = self.spades[:5]
+        high = self.deck.by_suit(std.CLUB)[-5:]
+        self.assertEqual(std.best_flush(low + high), high)

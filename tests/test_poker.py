@@ -7,15 +7,21 @@ class TestStandard(unittest.TestCase):
     def setUp(self):
         self.deck = std.make_deck()
         self.spades = self.deck.by_suit(std.SPADE)
-        self.aces = self.deck.by_rank(std.ACE)
         self.mixed = self.spades + self.deck.by_suit(std.CLUB).deal(12)
+        self.aces = self.deck.by_rank(std.ACE)
 
-    def test_pairs(self):
-        self.assertEqual(len(poker.find_pairs(self.deck)), 78)
-        self.assertEqual(len(poker.find_pairs(self.spades)), 0)
-        self.assertEqual(len(poker.find_pairs(self.mixed)), 12)
-        self.assertEqual(len(poker.find_pairs(self.aces)), 6)
-        self.assertEqual(len(poker.find_pairs(std.StandardHand())), 0)
+    def test_sets(self):
+        hands = [self.deck, self.spades, self.mixed, self.aces,
+                 std.StandardHand()]
+        sets = [[self.deck.by_rank(r) for r in std.RANKS],
+                [],
+                [std.StandardHand([std.StandardCard(r, std.SPADE),
+                                  std.StandardCard(r, std.CLUB)])
+                                 for r in std.RANKS[1:]],
+                [self.aces],
+                []]
+        for i in range(len(hands)):
+            self.assertEqual(poker.find_sets(hands[i]), sets[i])
 
     def test_flushes(self):
         ace_spades = std.StandardHand([std.StandardCard(std.ACE, std.SPADE)])

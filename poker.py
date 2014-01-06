@@ -31,16 +31,18 @@ class LongerStronger(object):
         return False
 
 
-def find_pairs(hand):
-    """Find all pairs (two cards with the same rank) in a hand.
+def find_sets(hand):
+    """Find all sets (two or more cards with the same rank) in a hand.
 
-    Returns a list of tuples of cards.
+    Returns a list of StandardHands.
 
     """
-    pairs = []
+    sets = []
     for rank in std.RANKS:
-        pairs.extend(itertools.combinations(hand.by_rank(rank), 2))
-    return pairs
+        by_rank = hand.by_rank(rank)
+        if len(by_rank) > 1:
+            sets.append(by_rank)
+    return sets
 
 
 def best_flush(hand):
@@ -66,8 +68,7 @@ def best_flush(hand):
     best_by_rank = max(all_flushes, key=LongerStronger)
     all_best = [f for f in all_flushes if card_ranks(f) ==
                                           card_ranks(best_by_rank)]
-    best = max(all_best, key=lambda f: f[0].suit)
-    return best
+    return max(all_best, key=lambda f: f[0].suit)
 
 
 if __name__ == "__main__":

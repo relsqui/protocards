@@ -91,10 +91,10 @@ value of that card (for fifteens and the play).
 #### poker
 poker implements some hand-analyzing tools for poker games.
 
-* `find_pairs(StandardHand)` returns a list of tuples of all the pairs
-  in a hand.
+* `find_sets(StandardHand)` returns a list of StandardHands with the pairs,
+  threes, or fours of a kind in the hand.
 * `best_flush(StandardHand)` returns the longest highest flush which can
-  be made from cards in a hand.
+  be made from cards in a hand, as a StandardHand.
 
 ___
 

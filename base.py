@@ -4,18 +4,7 @@ import random
 import UserList
 
 
-class EqualityMixin(object):
-
-    """Provide equality tests based on `__dict__`."""
-
-    def __eq__(self, other):
-        try:
-            return self.__dict__ == other.__dict__
-        except AttributeError:
-            return False
-
-
-class CardProperty(EqualityMixin):
+class CardProperty(object):
 
     """A property which can be used to define or describe a card.
 
@@ -54,9 +43,9 @@ class CardProperty(EqualityMixin):
         return "<{}:{}>".format(self.__class__.__name__, self.short)
 
 
-class Card(EqualityMixin):
+class Card(object):
 
-    """Placeholder to provide equality tests to subclasses."""
+    """Placeholder for symmetry."""
 
     pass
 

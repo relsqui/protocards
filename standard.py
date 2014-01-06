@@ -106,6 +106,12 @@ class StandardCard(base.Card):
     def __repr__(self):
         return '<{}:{}>'.format(self.__class__.__name__, self.short)
 
+    def __eq__(self, other):
+        return self.rank == other.rank and self.suit == other.suit
+
+    def __ne__(self, other):
+        return not self == other
+
 
 class StandardHand(base.Hand):
 
@@ -114,7 +120,8 @@ class StandardHand(base.Hand):
     def __str__(self):
         suit_strings = []
         for suit in reversed(SUITS):
-            cards = sorted(self.by_suit(suit), reverse=True)
+            cards = sorted(self.by_suit(suit), reverse=True,
+                           key=lambda c: c.rank)
             if cards:
                 ranks = "".join([c.rank.short for c in cards])
                 suit_strings.append(ranks + suit.short)

@@ -27,9 +27,8 @@ class TestStandard(unittest.TestCase):
             self.assertEqual(card.name, "Ace of Spades")
 
     def test_hand_str(self):
-        self.assertEqual(str(self.deck),
-                         "AKQJT98765432s AKQJT98765432h "
-                         "AKQJT98765432d AKQJT98765432c")
+        self.assertEqual(str(self.deck), "AKQJT98765432s AKQJT98765432h "
+                                         "AKQJT98765432d AKQJT98765432c")
 
     def test_hand_by_suit(self):
         spades = std.make_deck().by_suit(std.SPADE)

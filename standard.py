@@ -64,6 +64,7 @@ class StandardCard(base.Card):
         rank, suit - As provided.
         name       - "Rank of Suits" in title case.
         short      - rank.short + suit.short
+
     """
 
     def __init__(self, rank, suit):
@@ -89,7 +90,9 @@ class StandardHand(base.Hand):
 
     """A hand of standard playing cards.
 
-    Raises TypeError if a non-`StandardCard` is passed in."""
+    Raises TypeError if a non-`StandardCard` is passed in.
+
+    """
 
     def __str__(self):
         suit_strings = []
@@ -123,5 +126,5 @@ def make_deck(shuffle=False):
 
 
 if __name__ == "__main__":
-    deck = make_deck(shuffle = True)
+    deck = make_deck(shuffle=True)
     print deck.deal(13)

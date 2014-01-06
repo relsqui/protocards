@@ -34,6 +34,7 @@ class TestEqualityMixin(unittest.TestCase):
     def setUp(self):
         class Foo(base.EqualityMixin):
             pass
+
         class Bar(base.EqualityMixin):
             pass
         self.Foo = Foo

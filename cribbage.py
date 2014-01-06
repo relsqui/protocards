@@ -34,7 +34,7 @@ def score_fifteens(hand):
                 if n == target:
                     subsums += 1
                 elif n < target:
-                    subsums += count_subsums(target - n, numbers[i+1:])
+                    subsums += count_subsums(target - n, numbers[i + 1:])
         return subsums
 
     values = [value(c) for c in hand]
@@ -124,7 +124,7 @@ if __name__ == "__main__":
     def rand_bool():
         return not getrandbits(1)
 
-    deck = standard.make_deck(shuffle = True)
+    deck = standard.make_deck(shuffle=True)
     hand = deck.deal(4)
     turned = deck.pop()
 

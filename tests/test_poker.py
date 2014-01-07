@@ -23,6 +23,19 @@ class TestStandard(unittest.TestCase):
         for i in range(len(hands)):
             self.assertEqual(poker.find_sets(hands[i]), sets[i])
 
+    def test_best_set(self):
+        hands = [self.deck, self.spades, self.mixed, self.aces,
+                 std.StandardHand()]
+        sets = [self.aces,
+                std.StandardHand(),
+                std.StandardHand([std.StandardCard(std.ACE, std.SPADE),
+                                  std.StandardCard(std.ACE, std.CLUB)]),
+                self.aces,
+                std.StandardHand()]
+        for i in range(len(hands)):
+            print hands[i]
+            self.assertEqual(poker.best_set(hands[i]), sets[i])
+
     def test_flushes(self):
         ace_spades = std.StandardHand([std.StandardCard(std.ACE, std.SPADE)])
         empty_hand = std.StandardHand()

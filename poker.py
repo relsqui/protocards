@@ -37,12 +37,24 @@ def find_sets(hand):
     Returns a list of StandardHands.
 
     """
+    if not len(hand):
+        return std.StandardHand()
     sets = []
     for rank in std.RANKS:
         by_rank = hand.by_rank(rank)
         if len(by_rank) > 1:
             sets.append(by_rank)
     return sets
+
+
+def best_set(hand):
+    """Find the best set of like rank in a hand. Returns a StandardHand."""
+    sets = find_sets(hand)
+    if not len(sets):
+        return std.StandardHand()
+    best_length = len(max(sets, key=len))
+    longest = [s for s in sets if len(s) == best_length]
+    return max(longest, key=lambda s: s[0].rank)
 
 
 def best_flush(hand):
@@ -58,12 +70,11 @@ def best_flush(hand):
     If the given hand is empty, the returned hand is also empty.
 
     """
-    if not len(hand):
-        return std.StandardHand()
-
     def card_ranks(hand):
         return sorted([c.rank for c in hand])
 
+    if not len(hand):
+        return std.StandardHand()
     all_flushes = [hand.by_suit(s) for s in std.SUITS]
     best_by_rank = max(all_flushes, key=LongerStronger)
     all_best = [f for f in all_flushes if card_ranks(f) ==

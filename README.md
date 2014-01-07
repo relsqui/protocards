@@ -94,8 +94,9 @@ poker implements some hand-analyzing tools for poker games.
 * `find_sets(StandardHand)` returns a list of StandardHands with the
   pairs, threes, or fours of a kind in the hand;
   `best_set(StandardHand)` returns just the longest and highest-ranking.
-* `best_flush(StandardHand)` returns the longest highest flush which can
-  be made from cards in a hand, as a StandardHand.
+* `find_flushes(StandardHand)` returns a list of StandardHands which
+  constitute the original hand grouped by suit.
+  `best_flush(StandardHand)` returns just the longest and highest-ranking.
 
 ___
 

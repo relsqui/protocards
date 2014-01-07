@@ -5,45 +5,68 @@ from pydeck import poker, standard as std
 
 class TestStandard(unittest.TestCase):
     def setUp(self):
-        self.deck = std.make_deck()
-        self.spades = self.deck.by_suit(std.SPADE)
-        self.mixed = self.spades + self.deck.by_suit(std.CLUB).deal(12)
-        self.aces = self.deck.by_rank(std.ACE)
+        deck = std.make_deck()
+        spades = deck.by_suit(std.SPADE)
+        self.hands = {
+            "deck": deck,
+            "spades": spades,
+            "mixed": spades + deck.by_suit(std.CLUB).deal(12),
+            "aces": deck.by_rank(std.ACE),
+            "empty": std.StandardHand()
+        }
 
     def test_sets(self):
-        hands = [self.deck, self.spades, self.mixed, self.aces,
-                 std.StandardHand()]
-        sets = [[self.deck.by_rank(r) for r in std.RANKS],
-                [],
-                [std.StandardHand([std.StandardCard(r, std.SPADE),
-                                  std.StandardCard(r, std.CLUB)])
-                                 for r in std.RANKS[1:]],
-                [self.aces],
-                []]
-        for i in range(len(hands)):
-            self.assertEqual(poker.find_sets(hands[i]), sets[i])
+        sets = {
+            "deck": [self.hands["deck"].by_rank(r) for r in std.RANKS],
+            "spades": [],
+            "mixed": [std.StandardHand([std.StandardCard(r, std.SPADE),
+                                        std.StandardCard(r, std.CLUB)])
+                                       for r in std.RANKS[1:]],
+            "aces": [self.hands["aces"]],
+            "empty": []
+        }
+        for hand in self.hands:
+            self.assertEqual(poker.find_sets(self.hands[hand]), sets[hand])
 
     def test_best_set(self):
-        hands = [self.deck, self.spades, self.mixed, self.aces,
-                 std.StandardHand()]
-        sets = [self.aces,
-                std.StandardHand(),
-                std.StandardHand([std.StandardCard(std.ACE, std.SPADE),
-                                  std.StandardCard(std.ACE, std.CLUB)]),
-                self.aces,
-                std.StandardHand()]
-        for i in range(len(hands)):
-            print hands[i]
-            self.assertEqual(poker.best_set(hands[i]), sets[i])
+        best_sets = {
+            "deck": self.hands["aces"],
+            "spades": std.StandardHand(),
+            "mixed": std.StandardHand([std.StandardCard(std.ACE, std.SPADE),
+                                       std.StandardCard(std.ACE, std.CLUB)]),
+            "aces": self.hands["aces"],
+            "empty": self.hands["empty"]
+        }
+        for hand in self.hands:
+            self.assertEqual(poker.best_set(self.hands[hand]), best_sets[hand])
 
     def test_flushes(self):
-        ace_spades = std.StandardHand([std.StandardCard(std.ACE, std.SPADE)])
-        empty_hand = std.StandardHand()
-        self.assertEqual(poker.best_flush(self.deck), self.spades)
-        self.assertEqual(poker.best_flush(self.spades), self.spades)
-        self.assertEqual(poker.best_flush(self.mixed), self.spades)
-        self.assertEqual(poker.best_flush(self.aces), ace_spades)
-        self.assertEqual(poker.best_flush(empty_hand), empty_hand)
-        low = self.spades[:5]
-        high = self.deck.by_suit(std.CLUB)[-5:]
+        flushes = {
+            "deck": [self.hands["deck"].by_suit(std.CLUB),
+                     self.hands["deck"].by_suit(std.DIAMOND),
+                     self.hands["deck"].by_suit(std.HEART),
+                     self.hands["deck"].by_suit(std.SPADE)],
+            "spades": [self.hands["spades"]],
+            "mixed": [self.hands["deck"].by_suit(std.CLUB)[1:],
+                      self.hands["deck"].by_suit(std.SPADE)],
+            "aces": [std.StandardHand([c]) for c in self.hands["aces"]],
+            "empty": []
+        }
+        for hand in self.hands:
+            self.assertEqual(poker.find_flushes(self.hands[hand]),
+                             flushes[hand])
+
+    def test_best_flush(self):
+        best_flushes = {
+            "deck": self.hands["spades"],
+            "spades": self.hands["spades"],
+            "mixed": self.hands["spades"],
+            "aces": std.StandardHand([std.StandardCard(std.ACE, std.SPADE)]),
+            "empty": self.hands["empty"]
+        }
+        for hand in self.hands:
+            self.assertEqual(poker.best_flush(self.hands[hand]),
+                             best_flushes[hand])
+        low = self.hands["spades"][:5]
+        high = self.hands["deck"].by_suit(std.CLUB)[-5:]
         self.assertEqual(poker.best_flush(low + high), high)

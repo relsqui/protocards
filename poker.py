@@ -57,6 +57,11 @@ def best_set(hand):
     return max(longest, key=lambda s: s[0].rank)
 
 
+def find_flushes(hand):
+    """Find all flushes in a hand. Returns a list of StandardHands."""
+    return [hand.by_suit(s) for s in std.SUITS if len(hand.by_suit(s))]
+
+
 def best_flush(hand):
     """Find the best flush in a hand.
 
@@ -75,7 +80,7 @@ def best_flush(hand):
 
     if not len(hand):
         return std.StandardHand()
-    all_flushes = [hand.by_suit(s) for s in std.SUITS]
+    all_flushes = find_flushes(hand)
     best_by_rank = max(all_flushes, key=LongerStronger)
     all_best = [f for f in all_flushes if card_ranks(f) ==
                                           card_ranks(best_by_rank)]

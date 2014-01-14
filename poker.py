@@ -87,6 +87,40 @@ def best_flush(hand):
     return max(all_best, key=lambda f: f[0].suit)
 
 
+def find_straights(hand):
+    """Find all straights in a hand. Returns a list of StandardHands.
+
+    Straights which span the same ranks but different suits will be
+    returned separately; straights which are complete subsets of
+    other straights will not be included.
+
+    """
+    by_rank = {}
+    for rank in std.RANKS:
+        by_rank[rank] = []
+    for card in hand:
+        by_rank[card.rank].append(card)
+
+    begin = 0
+    slices = {}
+    slices[0] = []
+    for end in range(len(std.RANKS)):
+        rank = std.RANKS[end]
+        if by_rank[rank]:
+            slices[begin].append(by_rank[rank])
+        else:
+            begin = end + 1
+            slices[begin] = []
+
+    straights = []
+    for straight_slice in slices.values():
+        if not len(straight_slice):
+            continue
+        straight_lists = itertools.product(*straight_slice)
+        straights.extend(std.StandardHand(s) for s in straight_lists)
+    return straights
+
+
 if __name__ == "__main__":
     deck = std.make_deck(shuffle=True)
     print deck.deal(13)

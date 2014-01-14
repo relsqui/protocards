@@ -70,3 +70,18 @@ class TestStandard(unittest.TestCase):
         low = self.hands["spades"][:5]
         high = self.hands["deck"].by_suit(std.CLUB)[-5:]
         self.assertEqual(poker.best_flush(low + high), high)
+
+    def test_straights(self):
+        def count_straights(hand):
+            return len(poker.find_straights(hand))
+
+        hand = std.StandardHand(self.hands["spades"])
+        self.assertEqual(count_straights(hand), 1)
+        hand.append(std.StandardCard(std.ACE, std.CLUB))
+        self.assertEqual(count_straights(hand), 2)
+        hand.append(std.StandardCard(std.TWO, std.CLUB))
+        self.assertEqual(count_straights(hand), 4)
+        hand.append(std.StandardCard(std.THREE, std.CLUB))
+        self.assertEqual(count_straights(hand), 8)
+        hand.append(std.StandardCard(std.ACE, std.HEART))
+        self.assertEqual(count_straights(hand), 12)

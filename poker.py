@@ -47,24 +47,25 @@ def best_set(hand):
     return max(longest, key=lambda s: s[0].rank)
 
 
-def best_flush(hand):
+def best_flushes(hand):
     """Find the best flush in a hand.
 
-    Returns a StandardHand of the highest flush in the hand provided.
-    See LongerStronger for a definition of "highest." If the given hand
-    is empty, the returned hand is also empty.
+    Returns a list of StandardHands of the highest flushes in the hand
+    provided. See LongerStronger for a definition of "highest." If
+    there is a single best flush, the list will only have one element;
+    otherwise, all elements will be tied for rank and length.
+
+    If an empty hand is passed, an empty list is returned.
 
     """
     def card_ranks(hand):
         return sorted([c.rank for c in hand])
 
     if not len(hand):
-        return std.StandardHand()
+        return []
     all_flushes = std.find_flushes(hand)
-    best_by_rank = max(all_flushes, key=LongerStronger)
-    all_best = [f for f in all_flushes if card_ranks(f) ==
-                                          card_ranks(best_by_rank)]
-    return max(all_best, key=lambda f: f[0].suit)
+    best = max(all_flushes, key=LongerStronger)
+    return [f for f in all_flushes if card_ranks(f) == card_ranks(best)]
 
 
 if __name__ == "__main__":

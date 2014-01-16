@@ -27,17 +27,18 @@ class TestStandard(unittest.TestCase):
         for hand in self.hands:
             self.assertEqual(poker.best_set(self.hands[hand]), best_sets[hand])
 
-    def test_best_flush(self):
+    def test_best_flushes(self):
         best_flushes = {
-            "deck": self.hands["spades"],
-            "spades": self.hands["spades"],
-            "mixed": self.hands["spades"],
-            "aces": std.StandardHand([std.StandardCard(std.ACE, std.SPADE)]),
-            "empty": self.hands["empty"]
+            "deck": std.find_flushes(self.hands["deck"]),
+            "spades": [self.hands["spades"]],
+            "mixed": [self.hands["spades"]],
+            "aces": [std.StandardHand([a]) for a in self.hands["aces"]],
+            "empty": [],
         }
         for hand in self.hands:
-            self.assertEqual(poker.best_flush(self.hands[hand]),
+            print hand
+            self.assertEqual(poker.best_flushes(self.hands[hand]),
                              best_flushes[hand])
         low = self.hands["spades"][:5]
         high = self.hands["deck"].by_suit(std.CLUB)[-5:]
-        self.assertEqual(poker.best_flush(low + high), high)
+        self.assertEqual(poker.best_flushes(low + high), [high])

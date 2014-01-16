@@ -25,6 +25,11 @@ class TestStandard(unittest.TestCase):
         self.assertEqual(suit.plural, "FOOs")
         self.assertEqual(suit.short, "f")
 
+    def test_suit_equality(self):
+        self.assertEqual(std.CLUB, std.CLUB);
+        self.assertTrue(std.CLUB < std.SPADE);
+        self.assertNotEqual(std.CLUB, std.SPADE);
+
     def test_card_init(self):
         arg_pairs = [(std.ACE, std.SPADE), (std.RANKS[12], std.SUITS[3])]
         for args in arg_pairs:

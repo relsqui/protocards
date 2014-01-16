@@ -149,6 +149,61 @@ def make_deck(shuffle=False):
     return deck
 
 
+def find_sets(hand):
+    """Find all sets (two or more cards with the same rank) in a hand.
+
+    Returns a list of StandardHands.
+
+    """
+    if not len(hand):
+        return StandardHand()
+    sets = []
+    for rank in RANKS:
+        by_rank = hand.by_rank(rank)
+        if len(by_rank) > 1:
+            sets.append(by_rank)
+    return sets
+
+
+def find_flushes(hand):
+    """Find all flushes in a hand. Returns a list of StandardHands."""
+    return [hand.by_suit(s) for s in SUITS if len(hand.by_suit(s))]
+
+
+def find_straights(hand):
+    """Find all straights in a hand. Returns a list of StandardHands.
+
+    Straights which span the same ranks but different suits will be
+    returned separately; straights which are complete subsets of
+    other straights will not be included.
+
+    """
+    by_rank = {}
+    for rank in RANKS:
+        by_rank[rank] = []
+    for card in hand:
+        by_rank[card.rank].append(card)
+
+    begin = 0
+    slices = {}
+    slices[0] = []
+    for end in range(len(RANKS)):
+        rank = RANKS[end]
+        if by_rank[rank]:
+            slices[begin].append(by_rank[rank])
+        else:
+            begin = end + 1
+            slices[begin] = []
+
+    straights = []
+    for straight_slice in slices.values():
+        if not len(straight_slice):
+            continue
+        straight_lists = itertools.product(*straight_slice)
+        straights.extend(StandardHand(s) for s in straight_lists)
+    return straights
+
+
 if __name__ == "__main__":
     deck = make_deck(shuffle=True)
     print deck.deal(13)

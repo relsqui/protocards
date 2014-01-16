@@ -15,17 +15,17 @@ class TestStandard(unittest.TestCase):
             "empty": std.StandardHand()
         }
 
-    def test_best_set(self):
+    def test_best_sets(self):
         best_sets = {
-            "deck": self.hands["aces"],
-            "spades": std.StandardHand(),
-            "mixed": std.StandardHand([std.StandardCard(std.ACE, std.SPADE),
-                                       std.StandardCard(std.ACE, std.CLUB)]),
-            "aces": self.hands["aces"],
-            "empty": self.hands["empty"]
+            "deck": [self.hands["aces"]],
+            "spades": [],
+            "mixed": [std.StandardHand([std.StandardCard(std.ACE, std.SPADE),
+                                        std.StandardCard(std.ACE, std.CLUB)])],
+            "aces": [self.hands["aces"]],
+            "empty": [],
         }
         for hand in self.hands:
-            self.assertEqual(poker.best_set(self.hands[hand]), best_sets[hand])
+            self.assertEqual(poker.best_sets(self.hands[hand]), best_sets[hand])
 
     def test_best_flushes(self):
         best_flushes = {

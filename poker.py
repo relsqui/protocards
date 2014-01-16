@@ -37,14 +37,24 @@ class LongerStronger(object):
         return False
 
 
-def best_set(hand):
-    """Find the best set in a hand. Returns a StandardHand."""
+def best_sets(hand):
+    """Find the best sets in a hand.
+
+    Returns a list of StandardHands of the highest sets in the hand
+    provided. See LongerStronger for a definition of "highest." If
+    there is a single best set, the list will only have one element;
+    otherwise, all elements will be tied for length and rank.
+
+    If an empty hand is passed, an empty list is returned.
+
+    """
     sets = std.find_sets(hand)
     if not len(sets):
-        return std.StandardHand()
+        return []
     best_length = len(max(sets, key=len))
     longest = [s for s in sets if len(s) == best_length]
-    return max(longest, key=lambda s: s[0].rank)
+    best_rank = max(longest, key=lambda s: s[0].rank)[0].rank
+    return [s for s in longest if s[0].rank == best_rank]
 
 
 def best_flushes(hand):

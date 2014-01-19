@@ -47,7 +47,7 @@ its subclasses.
 `Hand` is a container for storing cards. It behaves like a list in
 that it can be indexed or sliced, and implements the standard list
 methods as well as these:
-* `.shuffle()` is the opposite of `.sort()`.
+* `.shuffle()` is the opposite of `.sort()`, and works in-place.
 * `.deal(n)` removes the number of cards you specify and returns them
   as a new `Hand`.
 
@@ -70,17 +70,24 @@ methods:
    from your hand.
  * `.by_suit(Suit)` is the same thing but for suits.
 
-Finally, `make_deck()` creates a full deck of cards, defined as one of
+Additionally, standard defines some top-level functions.
+
+`make_deck()` creates a full deck of cards, defined as one of
 each possible pair of the members of RANKS and SUITS. By default, it is
 returned still in order; pass `shuffle=True` to have it shuffled first.
 
+`find_sets(StandardHand)` returns a list of StandardHands with the
+pairs, threes, or fours of a kind in the hand;
+`find_flushes(StandardHand)` returns a list of StandardHands which
+constitute the original hand grouped by suit.
+
 
 #### cribbage
-cribbage implements the hand-scoring rules of cribbage (but not the
-play rules). Its main interface is `score_hand()`, which takes a
-StandardHand and returns a dictionary of ("score-type": points) pairs.
-You can also pass it `turned=StandardCard` and the boolean arguments
-`crib` and `dealer` to cover all the scoring possibilities.
+cribbage implements the hand-scoring rules of cribbage. Its main
+interface is `score_hand()`, which takes a StandardHand and returns a
+dictionary of ("score-type": points) pairs. You can also pass it
+`turned=StandardCard` and the boolean arguments `crib` and `dealer` to
+cover all the scoring possibilities.
 
 score_hand() has a series of helper functions which can be called
 individually with a StandardHand: `score_fifteens()` etc. return
@@ -89,14 +96,15 @@ integers, and `check_flush()` returns a boolean. It also has the
 value of that card (for fifteens and the play).
 
 #### poker
-poker implements some hand-analyzing tools for poker games.
+poker implements some hand-analyzing tools for poker-type games.
 
-* `find_sets(StandardHand)` returns a list of StandardHands with the
-  pairs, threes, or fours of a kind in the hand;
-  `best_set(StandardHand)` returns just the longest and highest-ranking.
-* `find_flushes(StandardHand)` returns a list of StandardHands which
-  constitute the original hand grouped by suit.
-  `best_flush(StandardHand)` returns just the longest and highest-ranking.
+* `best_sets(StandardHand)` returns a list of the most valuable
+  sets in a hand, judging first by length and then rank. The list
+  will have one element if there's a single best set, none if there are
+  no sets, and all of the tied sets otherwise.
+* `best_flushes(StandardHand)` is the same thing for flushes. An
+  important difference is that there is always a best flush in a hand
+  with any cards in it; it just may have only one card in it.
 
 ___
 

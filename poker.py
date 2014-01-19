@@ -58,7 +58,7 @@ def best_sets(hand):
 
 
 def best_flushes(hand):
-    """Find the best flush in a hand.
+    """Find the best flushes in a hand.
 
     Returns a list of StandardHands of the highest flushes in the hand
     provided. See LongerStronger for a definition of "highest." If

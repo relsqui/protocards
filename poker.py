@@ -31,45 +31,42 @@ class LongerStronger(object):
         other = other.obj
         if len(self) != len(other):
             return len(self) < len(other)
+        self_ranks = sorted([c.rank for c in self])
+        other_ranks = sorted([c.rank for c in other])
         for i in range(len(self)):
-            if self[i].rank != other[i].rank:
-                return self[i].rank < other[i].rank
+            if self_ranks[i] != other_ranks[i]:
+                return self_ranks[i] < other_ranks[i]
         return False
 
 
-def best_sets(hand):
-    """Find the best sets in a hand.
+def all_best(hands):
+    """Return all the hands in a list which are tied for best.
 
-    Returns a list of StandardHands of the highest sets in the hand
-    provided. See LongerStronger for a definition of "highest." If
-    there is a single best set, the list will only have one element;
-    otherwise, all elements will be tied for length and rank.
-
-    If an empty hand is passed, an empty list is returned.
+    See LongerStronger for a definition of best. If an empty list is
+    passed, an empty list is returned.
 
     """
-    sets = std.find_sets(hand)
-    if not len(sets):
+    if not hands:
         return []
-    best_length = len(max(sets, key=len))
-    longest = [s for s in sets if len(s) == best_length]
-    best_rank = max(longest, key=lambda s: s[0].rank)[0].rank
-    return [s for s in longest if s[0].rank == best_rank]
+
+    best = [hands[0]]
+    for hand in hands[1:]:
+        if LongerStronger(hand) == LongerStronger(best[0]):
+            best.append(hand)
+        elif LongerStronger(hand) > LongerStronger(best[0]):
+            best = [hand]
+    return best
+
+
+def best_sets(hand):
+    """Find the best sets in a hand, by LongerStronger."""
+    return all_best(std.find_sets(hand))
 
 
 def best_flushes(hand):
-    """Find the best flushes in a hand.
+    """Find the best flushes in a hand, by LongerStronger."""
+    return all_best(std.find_flushes(hand))
 
-    Returns a list of StandardHands of the highest flushes in the hand
-    provided. See LongerStronger for a definition of "highest." If
-    there is a single best flush, the list will only have one element;
-    otherwise, all elements will be tied for rank and length.
-
-    If an empty hand is passed, an empty list is returned.
-
-    """
-    def card_ranks(hand):
-        return sorted([c.rank for c in hand])
 
     if not len(hand):
         return []

@@ -149,10 +149,11 @@ def make_deck(shuffle=False):
     return deck
 
 
-def find_sets(hand):
-    """Find all sets (two or more cards with the same rank) in a hand.
+def find_sets(hand, minimum=2):
+    """Find all sets in a hand with an optional minimum size.
 
-    Returns a list of StandardHands.
+    A set is a group of cards with the same rank. If minimum is 1, all cards
+    in the hand will be returned. Returns a list of StandardHands.
 
     """
     if not len(hand):
@@ -160,7 +161,7 @@ def find_sets(hand):
     sets = []
     for rank in RANKS:
         by_rank = hand.by_rank(rank)
-        if len(by_rank) > 1:
+        if len(by_rank) >= minimum:
             sets.append(by_rank)
     return sets
 

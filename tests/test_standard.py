@@ -93,6 +93,20 @@ class TestStandard(unittest.TestCase):
         for hand in self.hands:
             self.assertEqual(std.find_sets(self.hands[hand]), sets[hand])
 
+    def test_sets_minimum(self):
+        sets = {
+            "deck": [self.hands["deck"].by_rank(r) for r in std.RANKS],
+            "spades": [],
+            "mixed": [],
+            "aces": [self.hands["aces"]],
+            "empty": [],
+            "separate": [],
+        }
+        for hand in self.hands:
+            self.assertEqual(std.find_sets(self.hands[hand], minimum=4),
+                                           sets[hand])
+            self.assertEqual(std.find_sets(self.hands[hand], minimum=10), [])
+
     def test_flushes(self):
         flushes = {
             "deck": [self.hands["deck"].by_suit(std.CLUB),

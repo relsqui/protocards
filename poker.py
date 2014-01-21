@@ -59,20 +59,18 @@ def all_best(hands):
 
 
 def best_sets(hand):
-    """Find the best sets in a hand, by LongerStronger."""
+    """Find the best sets in a hand, by LongerStronger. Returns a list."""
     return all_best(std.find_sets(hand))
 
 
 def best_flushes(hand):
-    """Find the best flushes in a hand, by LongerStronger."""
+    """Find the best flushes in a hand, by LongerStronger. Returns a list."""
     return all_best(std.find_flushes(hand))
 
 
-    if not len(hand):
-        return []
-    all_flushes = std.find_flushes(hand)
-    best = max(all_flushes, key=LongerStronger)
-    return [f for f in all_flushes if card_ranks(f) == card_ranks(best)]
+def best_straights(hand):
+    """Find the best straights in a hand, by LongerStronger. Returns a list."""
+    return all_best(std.find_straights(hand))
 
 
 if __name__ == "__main__":

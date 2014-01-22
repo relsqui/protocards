@@ -73,6 +73,29 @@ def best_straights(hand, minimum=1):
     return all_best(std.find_straights(hand, minimum))
 
 
+def find_full_houses(hand):
+    """Find all the full houses in a hand.
+
+    A full house is a set of three and a set of two. Returns a list of
+    StandardHands. Each rank represented in a hand will only appear
+    once among the full houses, even though you can make four sets of
+    three or six pairs out of four of a kind. That is, if you pass in
+    four kings and four sevens, you'll get two full houses out: kings
+    over sevens, and sevens over kings. Which suits are used depends on
+    the card order in the input hand.
+
+    """
+    full_houses = []
+    triples = std.find_sets(hand, minimum=3)
+    for triple in triples:
+        triple = triple[0:3]
+        remainder = hand - triple
+        pairs = std.find_sets(remainder, minimum=2)
+        for pair in pairs:
+            pair = pair[0:2]
+            full_houses.append(triple + pair)
+    return full_houses
+
 if __name__ == "__main__":
     deck = std.make_deck(shuffle=True)
     print deck.deal(13)

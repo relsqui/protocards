@@ -65,4 +65,18 @@ class TestStandard(unittest.TestCase):
                              best_straights[hand])
         mixed_straights = poker.best_straights(self.hands["mixed"])
         self.assertEqual(len(mixed_straights), 2 ** 12)
-        # skipping deck because there are so many!
+
+    def test_full_houses(self):
+        def count_fh(hand):
+            return len(poker.find_full_houses(hand))
+
+        twos = self.hands["deck"].by_rank(std.TWO)
+        threes = self.hands["deck"].by_rank(std.THREE)
+        fours = self.hands["deck"].by_rank(std.FOUR)
+        fives = self.hands["deck"].by_rank(std.FIVE)
+        hand = twos + threes
+        self.assertEqual(count_fh(hand), 2)
+        hand += fours
+        self.assertEqual(count_fh(hand), 6)
+        hand += fives
+        self.assertEqual(count_fh(hand), 12)

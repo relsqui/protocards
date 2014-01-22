@@ -176,12 +176,11 @@ def find_flushes(hand, minimum=1):
     return [hand.by_suit(s) for s in SUITS if len(hand.by_suit(s)) >= minimum]
 
 
-def find_straights(hand):
-    """Find all straights in a hand. Returns a list of StandardHands.
+def find_straights(hand, minimum=1):
+    """Find all straights in a hand with an optional minimum size.
 
     Straights which span the same ranks but different suits will be
-    returned separately; straights which are complete subsets of
-    other straights will not be included.
+    returned separately. Returns a list of StandardHands.
 
     """
     by_rank = {}
@@ -203,7 +202,7 @@ def find_straights(hand):
 
     straights = []
     for straight_slice in slices.values():
-        if not len(straight_slice):
+        if len(straight_slice) < minimum:
             continue
         straight_lists = itertools.product(*straight_slice)
         straights.extend(StandardHand(s) for s in straight_lists)

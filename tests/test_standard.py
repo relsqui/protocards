@@ -157,3 +157,12 @@ class TestStandard(unittest.TestCase):
         hand.append(std.StandardCard(std.ACE, std.HEART))
         self.assertEqual(count_straights(hand), 12)
         self.assertEqual(count_straights(self.hands["separate"]), 2)
+
+    def test_straights_minimum(self):
+        def count_straights_min(hand, min):
+            return len(std.find_straights(hand, min))
+
+        spades = self.hands["spades"]
+        self.assertEqual(count_straights_min(spades, 13), 1)
+        spades.pop()
+        self.assertEqual(count_straights_min(spades, 13), 0)

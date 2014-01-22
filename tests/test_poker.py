@@ -80,3 +80,31 @@ class TestStandard(unittest.TestCase):
         self.assertEqual(count_fh(hand), 6)
         hand += fives
         self.assertEqual(count_fh(hand), 12)
+
+    def test_best_full_houses(self):
+        def fh_ranks(hand):
+            triple, double = poker.split_full_house(hand)
+            return triple[0].rank, double[0].rank
+
+        twos = self.hands["deck"].by_rank(std.TWO)
+        threes = self.hands["deck"].by_rank(std.THREE)
+        fours = self.hands["deck"].by_rank(std.FOUR)
+        fives = self.hands["deck"].by_rank(std.FIVE)
+
+        hand = twos + threes
+        best = poker.best_full_houses(hand)
+        self.assertEqual(len(best), 1)
+        best_fh = best[0]
+        self.assertEqual(fh_ranks(best[0]), (std.THREE, std.TWO))
+
+        hand += fours
+        best = poker.best_full_houses(hand)
+        self.assertEqual(len(best), 1)
+        best_fh = best[0]
+        self.assertEqual(fh_ranks(best[0]), (std.FOUR, std.THREE))
+
+        hand += fives
+        best = poker.best_full_houses(hand)
+        self.assertEqual(len(best), 1)
+        best_fh = best[0]
+        self.assertEqual(fh_ranks(best[0]), (std.FIVE, std.FOUR))

@@ -96,6 +96,49 @@ def find_full_houses(hand):
             full_houses.append(triple + pair)
     return full_houses
 
+
+def split_full_house(full_house):
+    """Splits a full house into its triple and double.
+
+    Returns a tuple of those two parts of the hand, in that order.
+    Behavior over any hand which doesn't consist of exactly one triple
+    and one double is undefined and almost certanly doesn't do what
+    you want.
+
+    """
+    triple = std.find_sets(full_house, minimum=3)[0]
+    double = full_house - triple
+    return triple, double
+
+
+def best_full_houses(hand):
+    """Find the best full houses in a hand and return them in a list.
+
+    The ranks of the triple are compared first, then the ranks of the
+    double in case of a tie. If there is a single best, the returned
+    list has one element. If two or more full houses in a hand
+    hypothetically had the same ranks, this would return all of them,
+    but that's not possible with a standard deck.
+
+    """
+
+    full_houses = find_full_houses(hand)
+    triple, double = split_full_house(full_houses[0])
+    triple_rank = triple[0].rank
+    double_rank = double[0].rank
+    best = [full_houses[0]]
+    for full_house in full_houses[1:]:
+        triple, double = split_full_house(full_house)
+        if triple[0].rank > triple_rank or (triple[0].rank == triple_rank and
+                                            double[0].rank > double_rank):
+            triple_rank = triple[0].rank
+            double_rank = double[0].rank
+            best = [full_house]
+        elif triple[0].rank == triple_rank and double[0].rank == double_rank:
+            best.append(full_house)
+    return best
+
+
 if __name__ == "__main__":
     deck = std.make_deck(shuffle=True)
     print deck.deal(13)

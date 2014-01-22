@@ -131,6 +131,20 @@ class StandardHand(base.Hand):
         return "<{}:{}>".format(self.__class__.__name__,
                                 ",".join([c.short for c in self]))
 
+    def __sub__(self, other):
+        copy = self.__class__(self.data)
+        try:
+            if isinstance(other, base.Card):
+                copy.remove(other)
+            elif isinstance(other, base.Hand):
+                for card in other:
+                    copy.remove(card)
+            else:
+                return NotImplemented
+        except ValueError:
+            pass
+        return copy
+
     def by_suit(self, suit):
         """Return all cards of `suit`, without removing them."""
         return self.__class__([c for c in self if c.suit == suit])

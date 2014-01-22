@@ -59,6 +59,18 @@ class TestStandard(unittest.TestCase):
         hand = std.StandardHand([ace, two])
         self.assertEqual(repr(hand), "<StandardHand:As,2s>")
 
+    def test_hand_subtraction(self):
+        def subtest(x, y):
+            return x - y
+
+        nonspades = self.hands["deck"].by_suit(std.CLUB) +\
+                    self.hands["deck"].by_suit(std.DIAMOND) +\
+                    self.hands["deck"].by_suit(std.HEART)
+        club = std.StandardCard(std.ACE, std.CLUB)
+        self.assertEqual(self.hands["deck"] - self.hands["spades"], nonspades)
+        self.assertEqual(self.hands["spades"] - club, self.hands["spades"])
+        self.assertRaises(TypeError, subtest, self.hands["deck"], 3)
+
     def test_hand_by_suit(self):
         spades = std.make_deck().by_suit(std.SPADE)
         self.assertEqual(str(spades), "AKQJT98765432s")

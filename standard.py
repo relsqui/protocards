@@ -166,9 +166,14 @@ def find_sets(hand, minimum=2):
     return sets
 
 
-def find_flushes(hand):
-    """Find all flushes in a hand. Returns a list of StandardHands."""
-    return [hand.by_suit(s) for s in SUITS if len(hand.by_suit(s))]
+def find_flushes(hand, minimum=1):
+    """Find all flushes in a hand with an optional minimum size.
+
+    A flush is a group of cards with the same suit. Returns a list of
+    StandardHands.
+
+    """
+    return [hand.by_suit(s) for s in SUITS if len(hand.by_suit(s)) >= minimum]
 
 
 def find_straights(hand):

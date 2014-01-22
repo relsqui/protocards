@@ -126,6 +126,22 @@ class TestStandard(unittest.TestCase):
             self.assertEqual(std.find_flushes(self.hands[hand]),
                              flushes[hand])
 
+    def test_flushes_minimum(self):
+        flushes = {
+            "deck": [self.hands["deck"].by_suit(std.CLUB),
+                     self.hands["deck"].by_suit(std.DIAMOND),
+                     self.hands["deck"].by_suit(std.HEART),
+                     self.hands["deck"].by_suit(std.SPADE)],
+            "spades": [self.hands["spades"]],
+            "mixed": [self.hands["spades"]],
+            "aces": [],
+            "empty": [],
+            "separate": [],
+        }
+        for hand in self.hands:
+            self.assertEqual(std.find_flushes(self.hands[hand], minimum=13),
+                             flushes[hand])
+
     def test_straights(self):
         def count_straights(hand):
             return len(std.find_straights(hand))

@@ -58,19 +58,19 @@ def all_best(hands):
     return best
 
 
-def best_sets(hand):
+def best_sets(hand, minimum=2):
     """Find the best sets in a hand, by LongerStronger. Returns a list."""
-    return all_best(std.find_sets(hand))
+    return all_best(std.find_sets(hand, minimum))
 
 
-def best_flushes(hand):
+def best_flushes(hand, minimum=1):
     """Find the best flushes in a hand, by LongerStronger. Returns a list."""
-    return all_best(std.find_flushes(hand))
+    return all_best(std.find_flushes(hand, minimum))
 
 
-def best_straights(hand):
+def best_straights(hand, minimum=1):
     """Find the best straights in a hand, by LongerStronger. Returns a list."""
-    return all_best(std.find_straights(hand))
+    return all_best(std.find_straights(hand, minimum))
 
 
 if __name__ == "__main__":

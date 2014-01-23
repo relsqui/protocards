@@ -63,26 +63,22 @@ def best_sets(hand, minimum=2):
     return all_max(std.find_sets(hand, minimum))
 
 
-def best_flushes(hand, minimum=1):
+def best_flushes(hand):
     """Find the best flushes in a hand, by LongerStronger. Returns a list."""
-    return all_max(std.find_flushes(hand, minimum))
+    return all_max(std.find_flushes(hand, 5))
 
 
-def best_straights(hand, minimum=1):
+def best_straights(hand):
     """Find the best straights in a hand, by LongerStronger. Returns a list."""
-    return all_max(std.find_straights(hand, minimum))
+    return all_max(std.find_straights(hand, 5))
 
 
-def find_straight_flushes(hand, minimum=1):
-    """Find all straight flushes in a hand with an optional minimum length.
-
-    Returns a list of StandardHands with like suit and adjacent rank.
-
-    """
+def find_straight_flushes(hand):
+    """Find all straight flushes in a hand. Returns a list."""
     straight_flushes = []
-    flushes = std.find_flushes(hand, minimum)
+    flushes = std.find_flushes(hand, 5)
     for flush in flushes:
-        straight_flushes.extend(std.find_straights(flush, minimum))
+        straight_flushes.extend(std.find_straights(flush, 5))
     return straight_flushes
 
 

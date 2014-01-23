@@ -101,12 +101,13 @@ poker implements some hand-analyzing tools for poker-type games.
 
 `best_sets()`, `best_flushes()`, and `best_straights()` wrap the
 standard module's find functions, returning only the subhands which are
-tied for best (longest or highest rank). `find_straight_flushes()` does
-what it says. `find_full_houses()` and `best_full_houses()` are also
-provided; "best" in that case is defined by the rank of the triple
-followed by the rank of the pair.
+tied for best (longest or highest rank); `find_straight_flushes()` does
+what it says. All of these only return subhands with a length of at
+least 5.
 
-All of these take an optional `minimum` length argument.
+`find_full_houses()` and `best_full_houses()` are also provided; "best"
+in that case is defined by the rank of the triple followed by the rank
+of the pair.
 
 ___
 

@@ -44,7 +44,7 @@ class TestStandard(unittest.TestCase):
             "deck": std.find_flushes(self.hands["deck"]),
             "spades": [self.hands["spades"]],
             "mixed": [self.hands["spades"]],
-            "aces": [std.StandardHand([a]) for a in self.hands["aces"]],
+            "aces": [],
             "empty": [],
         }
         for hand in self.hands:
@@ -57,7 +57,7 @@ class TestStandard(unittest.TestCase):
     def test_best_straights(self):
         best_straights = {
             "spades": [self.hands["spades"]],
-            "aces": [std.StandardHand([a]) for a in self.hands["aces"]],
+            "aces": [],
             "empty": [],
         }
         for hand in best_straights:
@@ -72,7 +72,7 @@ class TestStandard(unittest.TestCase):
             "spades": [self.hands["spades"]],
             "mixed": [self.hands["mixed"].by_suit(std.CLUB),
                       self.hands["spades"]],
-            "aces": [std.StandardHand([a]) for a in self.hands["aces"]],
+            "aces": [],
             "empty": [],
         }
         for hand in straight_flushes:

@@ -116,26 +116,31 @@ def best_full_houses(hand):
 
     The ranks of the triple are compared first, then the ranks of the
     double in case of a tie. If there is a single best, the returned
-    list has one element. If two or more full houses in a hand
-    hypothetically had the same ranks, this would return all of them,
-    but that's not possible with a standard deck.
+    list has one element. In a standard deck it's not possible to have
+    two or more full houses tied for best, but if you construct that
+    situation, this function will return all of them.
 
     """
 
     full_houses = find_full_houses(hand)
     triple, double = split_full_house(full_houses[0])
-    triple_rank = triple[0].rank
-    double_rank = double[0].rank
+    best_triple_rank = triple[0].rank
+    best_double_rank = double[0].rank
     best = [full_houses[0]]
     for full_house in full_houses[1:]:
         triple, double = split_full_house(full_house)
-        if triple[0].rank > triple_rank or (triple[0].rank == triple_rank and
-                                            double[0].rank > double_rank):
-            triple_rank = triple[0].rank
-            double_rank = double[0].rank
+        triple_rank = triple[0].rank
+        double_rank = double[0].rank
+        if triple_rank == best_triple_rank:
+            if double_rank == best_double_rank:
+                best.append(full_house)
+            elif double_rank > best_double_rank:
+                best_double_rank = double_rank
+                best = [full_house]
+        elif triple_rank > best_triple_rank:
+            best_triple_rank = triple_rank
+            best_double_rank = double_rank
             best = [full_house]
-        elif triple[0].rank == triple_rank and double[0].rank == double_rank:
-            best.append(full_house)
     return best
 
 

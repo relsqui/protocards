@@ -20,11 +20,11 @@ class TestStandard(unittest.TestCase):
         self.assertTrue(poker.LongerStronger(self.hands["spades"]) <
                         poker.LongerStronger(self.hands["deck"]))
         self.assertFalse(poker.LongerStronger(self.hands["spades"]) <
-                        poker.LongerStronger(clubs))
+                         poker.LongerStronger(clubs))
         self.assertTrue(poker.LongerStronger(self.hands["empty"]) ==
                         poker.LongerStronger(std.StandardHand()))
         self.assertFalse(poker.LongerStronger(self.hands["mixed"]) ==
-                        poker.LongerStronger(std.StandardHand()))
+                         poker.LongerStronger(std.StandardHand()))
 
     def test_best_sets(self):
         best_sets = {
@@ -73,13 +73,10 @@ class TestStandard(unittest.TestCase):
         twos = self.hands["deck"].by_rank(std.TWO)
         threes = self.hands["deck"].by_rank(std.THREE)
         fours = self.hands["deck"].by_rank(std.FOUR)
-        fives = self.hands["deck"].by_rank(std.FIVE)
         hand = twos + threes
         self.assertEqual(count_fh(hand), 2)
         hand += fours
         self.assertEqual(count_fh(hand), 6)
-        hand += fives
-        self.assertEqual(count_fh(hand), 12)
 
     def test_best_full_houses(self):
         def fh_ranks(hand):
@@ -89,7 +86,6 @@ class TestStandard(unittest.TestCase):
         twos = self.hands["deck"].by_rank(std.TWO)
         threes = self.hands["deck"].by_rank(std.THREE)
         fours = self.hands["deck"].by_rank(std.FOUR)
-        fives = self.hands["deck"].by_rank(std.FIVE)
 
         hand = twos + threes
         best = poker.best_full_houses(hand)
@@ -103,8 +99,16 @@ class TestStandard(unittest.TestCase):
         best_fh = best[0]
         self.assertEqual(fh_ranks(best[0]), (std.FOUR, std.THREE))
 
-        hand += fives
-        best = poker.best_full_houses(hand)
-        self.assertEqual(len(best), 1)
-        best_fh = best[0]
-        self.assertEqual(fh_ranks(best[0]), (std.FIVE, std.FOUR))
+    def test_multi_best_full_houses(self):
+        def fake_find_fh(hand):
+            low = self.hands["deck"].by_rank(std.KING)[0:3] +\
+                  self.hands["deck"].by_rank(std.QUEEN)[0:2]
+            high = self.hands["aces"][0:3] +\
+                   self.hands["deck"].by_rank(std.KING)[0:2]
+            return [high, high, low]
+
+        real_find_fh = poker.find_full_houses
+        poker.find_full_houses = fake_find_fh
+        best = poker.best_full_houses(self.hands["empty"])
+        self.assertEqual(len(best), 2)
+        poker.find_full_houses = real_find_fh

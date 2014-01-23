@@ -116,9 +116,11 @@ class TestStandard(unittest.TestCase):
         def fake_find_fh(hand):
             low = self.hands["deck"].by_rank(std.KING)[0:3] +\
                   self.hands["deck"].by_rank(std.QUEEN)[0:2]
+            mid = self.hands["aces"][0:3] +\
+                  self.hands["deck"].by_rank(std.QUEEN)[0:2]
             high = self.hands["aces"][0:3] +\
                    self.hands["deck"].by_rank(std.KING)[0:2]
-            return [high, high, low]
+            return [high, high, mid, low]
 
         real_find_fh = poker.find_full_houses
         poker.find_full_houses = fake_find_fh

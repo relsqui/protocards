@@ -106,8 +106,9 @@ default, returns any set of two to four of a kind; specify the optional
 
 `best_flushes()` and `best_straights()` wrap the standard module's find
 functions, returning only the subhands which are tied for best (longest
-or highest ranked). `find_straight_flushes()` does what it says. All of
-these only return subhands with a length of at least 5.
+or highest ranked). `find_straight_flushes()` and
+`best_straight_flushes()` work analogously. All of these only return subhands
+with a length of at least 5.
 
 `find_full_houses()` and `best_full_houses()` are also provided; "best"
 in that case is defined by the rank of the triple followed by the rank

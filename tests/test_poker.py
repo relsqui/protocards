@@ -104,6 +104,18 @@ class TestStandard(unittest.TestCase):
             self.assertEqual(poker.find_straight_flushes(self.hands[hand]),
                              straight_flushes[hand])
 
+    def test_best_straight_flushes(self):
+        best_sf = {
+            "deck": std.find_flushes(self.hands["deck"]),
+            "spades": [self.hands["spades"]],
+            "mixed": [self.hands["spades"]],
+            "aces": [],
+            "empty": [],
+        }
+        for hand in best_sf:
+            self.assertEqual(poker.best_straight_flushes(self.hands[hand]),
+                             best_sf[hand])
+
     def test_full_houses(self):
         def count_fh(hand):
             return len(poker.find_full_houses(hand))

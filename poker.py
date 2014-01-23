@@ -89,6 +89,15 @@ def find_straight_flushes(hand):
     return straight_flushes
 
 
+def best_straight_flushes(hand):
+    """Find the best straight flushes in a hand, by LongerStronger.
+
+    Returns a list.
+
+    """
+    return all_max(find_straight_flushes(hand))
+
+
 def find_full_houses(hand):
     """Find all the full houses in a hand.
 

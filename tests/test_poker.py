@@ -66,6 +66,19 @@ class TestStandard(unittest.TestCase):
         mixed_straights = poker.best_straights(self.hands["mixed"])
         self.assertEqual(len(mixed_straights), 2 ** 12)
 
+    def test_straight_flushes(self):
+        straight_flushes = {
+            "deck": std.find_flushes(self.hands["deck"]),
+            "spades": [self.hands["spades"]],
+            "mixed": [self.hands["mixed"].by_suit(std.CLUB),
+                      self.hands["spades"]],
+            "aces": [std.StandardHand([a]) for a in self.hands["aces"]],
+            "empty": [],
+        }
+        for hand in straight_flushes:
+            self.assertEqual(poker.find_straight_flushes(self.hands[hand]),
+                             straight_flushes[hand])
+
     def test_full_houses(self):
         def count_fh(hand):
             return len(poker.find_full_houses(hand))

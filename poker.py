@@ -73,6 +73,19 @@ def best_straights(hand, minimum=1):
     return all_max(std.find_straights(hand, minimum))
 
 
+def find_straight_flushes(hand, minimum=1):
+    """Find all straight flushes in a hand with an optional minimum length.
+
+    Returns a list of StandardHands with like suit and adjacent rank.
+
+    """
+    straight_flushes = []
+    flushes = std.find_flushes(hand, minimum)
+    for flush in flushes:
+        straight_flushes.extend(std.find_straights(flush, minimum))
+    return straight_flushes
+
+
 def find_full_houses(hand):
     """Find all the full houses in a hand.
 
@@ -98,7 +111,7 @@ def find_full_houses(hand):
 
 
 def split_full_house(full_house):
-    """Splits a full house into its triple and double.
+    """Split a full house into its triple and double.
 
     Returns a tuple of those two parts of the hand, in that order.
     Behavior over any hand which doesn't consist of exactly one triple

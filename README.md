@@ -99,15 +99,21 @@ value of that card (for fifteens and the play).
 #### poker
 poker implements some hand-analyzing tools for poker-type games.
 
-`best_sets()`, `best_flushes()`, and `best_straights()` wrap the
-standard module's find functions, returning only the subhands which are
-tied for best (longest or highest rank); `find_straight_flushes()` does
-what it says. All of these only return subhands with a length of at
-least 5.
+`best_sets()` takes a hand and returns a list of sets which are
+tied for longest or highest-ranked (in that order of priority). By
+default, returns any set of two to four of a kind; specify the optional
+`length` argument to show only twos, threes, or fours.
+
+`best_flushes()` and `best_straights()` wrap the standard module's find
+functions, returning only the subhands which are tied for best (longest
+or highest ranked). `find_straight_flushes()` does what it says. All of
+these only return subhands with a length of at least 5.
 
 `find_full_houses()` and `best_full_houses()` are also provided; "best"
 in that case is defined by the rank of the triple followed by the rank
-of the pair.
+of the pair. With a normal deck, there can only ever be one best full
+house (because you can't have two triples of the same rank), but these
+functions still both return lists for consistency with the others.
 
 ___
 

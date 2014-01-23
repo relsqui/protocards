@@ -58,9 +58,16 @@ def all_max(hands):
     return best
 
 
-def best_sets(hand, minimum=2):
+def best_sets(hand, length=None):
     """Find the best sets in a hand, by LongerStronger. Returns a list."""
-    return all_max(std.find_sets(hand, minimum))
+    if length == None:
+        minimum = 2
+        maximum = 4
+    else:
+        minimum = length
+        maximum = length
+    sets = all_max(std.find_sets(hand, minimum))
+    return [s for s in sets if len(s) <= maximum]
 
 
 def best_flushes(hand):

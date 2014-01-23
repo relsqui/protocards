@@ -76,10 +76,11 @@ Additionally, standard defines some top-level functions.
 each possible pair of the members of RANKS and SUITS. By default, it is
 returned still in order; pass `shuffle=True` to have it shuffled first.
 
-`find_sets(StandardHand)` returns a list of StandardHands with the
-pairs, threes, or fours of a kind in the hand;
-`find_flushes(StandardHand)` returns a list of StandardHands which
-constitute the original hand grouped by suit.
+`find_sets()`, `find_flushes()`, and `find_straights()` all take a
+StandardHand and return a list of subhands which are of like rank
+(sets) or suit (flushes), or of consecutive rank (straights). An
+optional `minimum` argument specifies how small a subhand will be
+returned; the default is 2 for sets and 1 for the others.
 
 
 #### cribbage
@@ -98,13 +99,14 @@ value of that card (for fifteens and the play).
 #### poker
 poker implements some hand-analyzing tools for poker-type games.
 
-* `best_sets(StandardHand)` returns a list of the most valuable
-  sets in a hand, judging first by length and then rank. The list
-  will have one element if there's a single best set, none if there are
-  no sets, and all of the tied sets otherwise.
-* `best_flushes(StandardHand)` is the same thing for flushes. An
-  important difference is that there is always a best flush in a hand
-  with any cards in it; it just may have only one card in it.
+`best_sets()`, `best_flushes()`, and `best_straights()` wrap the
+standard module's find functions, returning only the subhands which are
+tied for best (longest or highest rank). `find_straight_flushes()` does
+what it says. `find_full_houses()` and `best_full_houses()` are also
+provided; "best" in that case is defined by the rank of the triple
+followed by the rank of the pair.
+
+All of these take an optional `minimum` length argument.
 
 ___
 

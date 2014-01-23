@@ -39,10 +39,10 @@ class LongerStronger(object):
         return False
 
 
-def all_best(hands):
-    """Return all the hands in a list which are tied for best.
+def all_max(hands):
+    """Return all the hands in a list which are tied for greatest.
 
-    See LongerStronger for a definition of best. If an empty list is
+    See LongerStronger for a definition of great. If an empty list is
     passed, an empty list is returned.
 
     """
@@ -60,17 +60,17 @@ def all_best(hands):
 
 def best_sets(hand, minimum=2):
     """Find the best sets in a hand, by LongerStronger. Returns a list."""
-    return all_best(std.find_sets(hand, minimum))
+    return all_max(std.find_sets(hand, minimum))
 
 
 def best_flushes(hand, minimum=1):
     """Find the best flushes in a hand, by LongerStronger. Returns a list."""
-    return all_best(std.find_flushes(hand, minimum))
+    return all_max(std.find_flushes(hand, minimum))
 
 
 def best_straights(hand, minimum=1):
     """Find the best straights in a hand, by LongerStronger. Returns a list."""
-    return all_best(std.find_straights(hand, minimum))
+    return all_max(std.find_straights(hand, minimum))
 
 
 def find_full_houses(hand):

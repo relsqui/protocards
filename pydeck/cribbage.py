@@ -2,7 +2,7 @@
 
 from operator import mul
 
-from pydeck import standard
+from . import standard
 
 
 RANKS = [standard.RANKS[-1]] + standard.RANKS[:-1]

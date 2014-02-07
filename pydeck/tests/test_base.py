@@ -3,7 +3,7 @@
 import unittest
 import random
 
-from pydeck import base
+from .. import base
 
 
 class TestBase(unittest.TestCase):

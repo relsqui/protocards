@@ -63,8 +63,8 @@ constants--`TWO`, `QUEEN`, `HEART`, and so on.
 a name. You can compare StandardCards to each other; cards with lower
 ranks are less than cards with higher ranks, and a card with a lower
 suit is less than a card with a higher suit and the same rank. (Aces
-are high by default. If you don't know what order the suits go in, go
-find someone who plays bridge and ask them.)
+are high in the default implementation. Ascending suit order is clubs,
+diamonds, hearts, spades, following bridge.)
 
 `StandardHand` is what you hold StandardCards in. To Hand it adds a
 tidy string representation (as seen in the examples), and two more

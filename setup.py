@@ -6,7 +6,7 @@ if __name__ == "__main__":
     setuptools.setup(
         name="protocards",
         version='0.1.0',
-        description="Simple tools for building card games in python.",
+        description="Basic tools for working with generic game cards in python.",
         license="MIT",
         author="Finn Ellis",
         author_email="relsqui@chiliahedron.com",

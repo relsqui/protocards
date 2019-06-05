@@ -1,6 +1,8 @@
 ## protocards
 
-is a library for writing card games in python. Basic usage is simple:
+is a library for implementing card game logic in python. It's designed to be
+generic enough to build unique card types with, but also implements a standard
+poker deck for convenience. Basic usage is simple:
 
 ```
 >>> from protocards.standard import make_deck

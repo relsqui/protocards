@@ -7,9 +7,9 @@ is a library for writing card games in python. Basic usage is simple:
 >>>
 >>> deck = make_deck(shuffle=True)
 >>> hand = deck.deal(5)
->>> print hand
+>>> print(hand)
 AJ6s 2h 3c
->>> print hand[0]
+>>> print(hand[0])
 Ace of Spades
 ```
 
@@ -22,9 +22,9 @@ The cribbage module implements some example game logic using pydeck.
 >>> deck = make_deck(shuffle=True)
 >>> hand = deck.deal(4)
 >>> turned = deck.pop()
->>> print hand
+>>> print(hand)
 Jh 8d QTc
->>> print turned
+>>> print(turned)
 Six of Spades
 >>> score_hand(hand, turned)
 {'runs': 3, 'fifteens': 0, 'pairs': 0, 'nobs': 0, 'flush': 0, 'heels': 0}
@@ -106,8 +106,8 @@ score for a whole deck of cards was. Now I can find out!
 ...     score = cribbage.score_hand(standard.make_deck())
 ...     for key, value in score.items():
 ...             if value:
-...                 print "{} for {:,}".format(key, value)
-...     print "total: {:,}".format(sum(score.values()))
+...                 print("{} for {:,}".format(key, value))
+...     print("total: {:,}".format(sum(score.values())))
 ... 
 >>> score_deck()
 runs for 872,415,232

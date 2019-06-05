@@ -76,7 +76,7 @@ class StandardCard(base.Card):
         return self.name
 
     def __repr__(self):
-        return '<{}:{}>'.format(self.__class__.__name__, self.short)
+        return "<{}:{}>".format(self.__class__.__name__, self.short)
 
     def __lt__(self, other):
         if self.rank == other.rank:

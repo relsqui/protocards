@@ -9,7 +9,7 @@ list of each: RANKS and SUITS.
 import functools
 import itertools
 
-from pydeck import base
+from . import base
 
 
 class Rank(base.CardProperty):

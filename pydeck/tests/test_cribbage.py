@@ -2,7 +2,7 @@
 
 import unittest
 
-from pydeck import standard, cribbage
+from .. import standard, cribbage
 
 
 class TestCribbage(unittest.TestCase):

@@ -14,14 +14,14 @@ from . import base
 
 class Rank(base.CardProperty):
 
-    """Subclass of `pydeck.base.CardProperty` for symmetry with `Suit`."""
+    """Subclass of `pycards.base.CardProperty` for symmetry with `Suit`."""
 
     pass
 
 
 class Suit(base.CardProperty):
 
-    """Subclass of `pydeck.base.CardProperty`. Lowercases its `.short`."""
+    """Subclass of `pycards.base.CardProperty`. Lowercases its `.short`."""
 
     def __init__(self, *args, **kwargs):
         super(Suit, self).__init__(*args, **kwargs)

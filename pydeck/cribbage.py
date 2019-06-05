@@ -3,6 +3,7 @@
 from operator import mul
 
 from . import standard
+from functools import reduce
 
 
 RANKS = [standard.RANKS[-1]] + standard.RANKS[:-1]
@@ -134,13 +135,13 @@ if __name__ == "__main__":
     score = score_hand(hand, turned=turned, dealer=dealing, crib=cribbing)
 
     if dealing:
-        print "dealing."
+        print("dealing.")
     if cribbing:
-        print "counting crib."
-    print "turned:", turned
-    print hand
-    print
-    for reason, points in score.items():
+        print("counting crib.")
+    print("turned:", turned)
+    print(hand)
+    print()
+    for reason, points in list(score.items()):
         if points:
-            print reason, "for", points
-    print "total:", sum(score.values())
+            print(reason, "for", points)
+    print("total:", sum(score.values()))

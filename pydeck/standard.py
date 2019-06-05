@@ -124,4 +124,4 @@ def make_deck(shuffle=False):
 
 if __name__ == "__main__":
     deck = make_deck(shuffle = True)
-    print deck.deal(13)
+    print(deck.deal(13))

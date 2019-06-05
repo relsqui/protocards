@@ -1,7 +1,7 @@
 """Provides abstract tools for building card, hand, and game types."""
 
 import random
-import UserList
+import collections
 
 
 class EqualityMixin(object):
@@ -64,7 +64,7 @@ class Card(EqualityMixin):
     pass
 
 
-class Hand(UserList.UserList):
+class Hand(collections.UserList):
 
     """List-like class for storing and dealing cards.
 

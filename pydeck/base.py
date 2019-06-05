@@ -1,7 +1,7 @@
 """Provides abstract tools for building card, hand, and game types."""
 
 import random
-import UserList
+import collections
 
 
 class EqualityMixin(object):
@@ -64,7 +64,7 @@ class Card(EqualityMixin):
     pass
 
 
-class Hand(UserList.UserList):
+class Hand(collections.UserList):
 
     """List-like class for storing and dealing cards.
 
@@ -90,6 +90,6 @@ class Hand(UserList.UserList):
         """
         if count > len(self):
             raise IndexError("Not enough cards in Hand")
-        dealt = self[-count:]
+        dealt = self.__class__(self[-count:])
         del self[-count:]
         return dealt

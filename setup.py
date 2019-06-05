@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="protocards",
-    version="0.1.1",
+    version="0.1.2",
     author="Finn Ellis",
     author_email="relsqui@chiliahedron.com",
     license="MIT",
@@ -15,10 +15,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/relsqui/protocards",
-    provides=[
-        "protocards",
-    ],
-    include_package_data=True,
+    packages=setuptools.find_packages(),
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",

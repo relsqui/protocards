@@ -90,6 +90,6 @@ class Hand(collections.UserList):
         """
         if count > len(self):
             raise IndexError("Not enough cards in Hand")
-        dealt = self[-count:]
+        dealt = self.__class__(self[-count:])
         del self[-count:]
         return dealt

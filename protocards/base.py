@@ -24,7 +24,7 @@ class CardProperty(EqualityMixin):
 
     `CardProperty` is meant to be subclassed to define more specific
     attributes of a card, or simply categories of card with no data
-    associated with them. See `Rank` and `Suit` in `pydeck.standard`.
+    associated with them. See `Rank` and `Suit` in `protocards.standard`.
 
     Required Argument:
         name   - String; describes the property.

@@ -14,14 +14,14 @@ from . import base
 
 class Rank(base.CardProperty):
 
-    """Subclass of `pydeck.base.CardProperty` for symmetry with `Suit`."""
+    """Subclass of `protocards.base.CardProperty` for symmetry with `Suit`."""
 
     pass
 
 
 class Suit(base.CardProperty):
 
-    """Subclass of `pydeck.base.CardProperty`. Lowercases its `.short`."""
+    """Subclass of `protocards.base.CardProperty`. Lowercases its `.short`."""
 
     def __init__(self, *args, **kwargs):
         super(Suit, self).__init__(*args, **kwargs)
@@ -123,5 +123,5 @@ def make_deck(shuffle=False):
 
 
 if __name__ == "__main__":
-    deck = make_deck(shuffle = True)
+    deck = make_deck(shuffle=True)
     print(deck.deal(13))

@@ -45,7 +45,7 @@ class TestStandard(unittest.TestCase):
         deck = standard.make_deck()
         self.assertEqual(str(deck),
                          "AKQJT98765432s AKQJT98765432h "
-                         "AKQJT98765432d AKQJT98765432c") 
+                         "AKQJT98765432d AKQJT98765432c")
 
     def test_hand_by_suit(self):
         spades = standard.make_deck().by_suit(standard.SPADE)
@@ -54,7 +54,6 @@ class TestStandard(unittest.TestCase):
     def test_hand_by_rank(self):
         aces = standard.make_deck().by_rank(standard.ACE)
         self.assertEqual(str(aces), "As Ah Ad Ac")
-
 
     def test_make_deck(self):
         hand = standard.StandardHand()

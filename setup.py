@@ -4,29 +4,30 @@ import setuptools
 
 if __name__ == "__main__":
     setuptools.setup(
-        name="pydeck",
-        #version='0.0.0',
-        description="Simple tools for building card games in python.",
-        #license="",
-        author="Finn Ellis", 
+        name="protocards",
+        version='0.1.0',
+        description="Basic tools for working with generic game cards in python.",
+        license="MIT",
+        author="Finn Ellis",
         author_email="relsqui@chiliahedron.com",
-        url="https://github.com/relsqui/pydeck",
+        url="https://github.com/relsqui/protocards",
         provides=[
-            "pydeck",
+            "protocards",
         ],
         packages=[
-            "pydeck",
-            "pydeck.tests"
+            "protocards",
+            "protocards.tests"
         ],
         package_data={
-            'pydeck': ["README.md"],
+            'protocards': ["README.md"],
         },
         include_package_data=True,
         classifiers=[
             "Development Status :: 3 - Alpha",
             "Intended Audience :: Developers",
             "Operating System :: OS Independent",
-            "Programming Language :: Python :: 2.7",
+            "Programming Language :: Python :: 3",
+            "License :: OSI Approved :: MIT License",
             "Topic :: Software Development :: Libraries :: Python Modules",
         ],
     )

@@ -1,9 +1,11 @@
-## pydeck
+## protocards
 
-is a library for writing card games in python. Basic usage is simple:
+is a library for implementing card game logic in python. It's designed to be
+generic enough to build unique card types with, but also implements a standard
+poker deck for convenience. Basic usage is simple:
 
 ```
->>> from pydeck.standard import make_deck
+>>> from protocards.standard import make_deck
 >>>
 >>> deck = make_deck(shuffle=True)
 >>> hand = deck.deal(5)
@@ -13,11 +15,11 @@ AJ6s 2h 3c
 Ace of Spades
 ```
 
-The cribbage module implements some example game logic using pydeck.
+The cribbage module implements some example game logic using protocards.
 
 ```
->>> from pydeck.standard import make_deck
->>> from pydeck.cribbage import score_hand
+>>> from protocards.standard import make_deck
+>>> from protocards.cribbage import score_hand
 >>>
 >>> deck = make_deck(shuffle=True)
 >>> hand = deck.deal(4)
@@ -100,7 +102,7 @@ I originally wrote this because I wanted to know what the cribbage
 score for a whole deck of cards was. Now I can find out!
 
 ```
->>> from pydeck import standard, cribbage
+>>> from protocards import standard, cribbage
 >>>
 >>> def score_deck():
 ...     score = cribbage.score_hand(standard.make_deck())

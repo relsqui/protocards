@@ -77,10 +77,10 @@ def score_hand(hand, turned=None, crib=False, dealer=False):
     """Calculate the cribbage score of a hand.
 
     Required Argument:
-    hand   - `pycards.standard.StandardHand`; the hand to count.
+    hand   - `protocards.standard.StandardHand`; the hand to count.
 
     Optional Arguments:
-    turned - `pycards.standard.StandardCard`; the turned card. Will be
+    turned - `protocards.standard.StandardCard`; the turned card. Will be
              included in scoring if given, and can provide heels and
              nobs points.
     crib   - Boolean; whether to score this hand as a crib. Flushes in

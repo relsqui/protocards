@@ -4,22 +4,22 @@ import setuptools
 
 if __name__ == "__main__":
     setuptools.setup(
-        name="pycards",
+        name="protocards",
         version='0.1.0',
         description="Simple tools for building card games in python.",
         license="MIT",
         author="Finn Ellis", 
         author_email="relsqui@chiliahedron.com",
-        url="https://github.com/relsqui/pycards",
+        url="https://github.com/relsqui/protocards",
         provides=[
-            "pycards",
+            "protocards",
         ],
         packages=[
-            "pycards",
-            "pycards.tests"
+            "protocards",
+            "protocards.tests"
         ],
         package_data={
-            'pycards': ["README.md"],
+            'protocards': ["README.md"],
         },
         include_package_data=True,
         classifiers=[

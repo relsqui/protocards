@@ -8,7 +8,7 @@ if __name__ == "__main__":
         version='0.1.0',
         description="Simple tools for building card games in python.",
         license="MIT",
-        author="Finn Ellis", 
+        author="Finn Ellis",
         author_email="relsqui@chiliahedron.com",
         url="https://github.com/relsqui/protocards",
         provides=[

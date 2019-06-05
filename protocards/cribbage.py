@@ -125,7 +125,7 @@ if __name__ == "__main__":
     def rand_bool():
         return not getrandbits(1)
 
-    deck = standard.make_deck(shuffle = True)
+    deck = standard.make_deck(True)
     hand = deck.deal(4)
     turned = deck.pop()
 

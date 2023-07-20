@@ -94,6 +94,12 @@ class TestCribbage(unittest.TestCase):
         score = cribbage.score_hand(hand, turned=turned, crib=True)
         self.assertEqual(score["flush"], 5)
 
+    def test_score_crib_heels(self):
+        hand = self.deck.by_rank(standard.FIVE)
+        turned = self.deck.by_rank(standard.JACK).pop()
+        score = cribbage.score_hand(hand, turned=turned, crib=True, dealer=True)
+        self.assertEqual(score["heels"], 0)
+
     def test_score_dealer_noturn(self):
         self.assertEqual(cribbage.score_hand(self.deck, dealer=True),
                          self.dscore)

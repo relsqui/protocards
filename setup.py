@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="protocards",
-    version="0.1.2",
+    version="0.2.0",
     author="Finn Ellis",
     author_email="relsqui@chiliahedron.com",
     license="MIT",
